@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -31,6 +32,15 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
             _sendEndpointProvider = sendEndpointProvider;
             _orderRepository = orderRepository;
             _productRepository = productRepository;
+        }
+
+        [HttpGet("orders")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            
+            var orders = await _orderRepository.GetByUser(ObjectId.Parse(userId));
+            return Ok(orders);
         }
         
         [HttpPost("place")]
@@ -120,23 +130,6 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
             }
             
             await billingEndpoint.Send(billCommand);
-            
-            // var endpoint = await _publishEndpoint.GetSendEndpoint(new Uri("queue:provisioning-service"));
-            // var provisionCommand = new ProvisionProductCommand
-            // {
-            //     CustomerId = "m0uka!",
-            //     CustomerEmail = "m0uka@m0uka.dev",
-            //     ProductId = "iron-balicek",
-            //     ProvisionVariables = new Dictionary<string, string>()
-            //     {
-            //         { "ram", "25000" },
-            //         { "cpu", "400" },
-            //         { "server-name", "test server" }
-            //     }
-            // };
-            //
-            // await endpoint.Send<IProvisionProductCommand>(provisionCommand);
-            
             return Ok();
         }
     }

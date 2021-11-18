@@ -77,6 +77,9 @@ namespace ParadiseCommerce.Services.Billing.Services
             _logger.LogInformation($"Created {invoice.PaymentMethod} payment schema for customer {invoice.CustomerId}");
             _logger.LogInformation(paymentSchema.PaymentUrl);
 
+            invoice.PaymentLink = paymentSchema.PaymentUrl;
+            await _invoiceRepository.Update(invoice.Id, invoice);
+
             return paymentSchema;
         }
 

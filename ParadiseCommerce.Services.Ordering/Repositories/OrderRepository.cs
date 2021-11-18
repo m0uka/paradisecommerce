@@ -32,14 +32,18 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
             return order;
         }
 
-        public Task<IEnumerable<Order>> Get()
+        public async Task<IEnumerable<Order>> Get()
         {
-            throw new System.NotImplementedException();
+            var orders = await _orders.Find(_ => true).ToListAsync();
+            return orders;
         }
 
-        public Task<IEnumerable<Order>> GetByUser(ObjectId userId)
+        public async Task<IEnumerable<Order>> GetByUser(ObjectId userId)
         {
-            throw new System.NotImplementedException();
+            var filter = Builders<Order>.Filter.Eq(c => c.UserId, userId);
+            var orders = await _orders.Find(filter).ToListAsync();
+
+            return orders;
         }
 
         public async Task<bool> Update(ObjectId objectId, Order order)

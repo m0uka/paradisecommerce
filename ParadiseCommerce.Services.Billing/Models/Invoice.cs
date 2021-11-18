@@ -21,7 +21,9 @@ namespace ParadiseCommerce.Services.Billing.Models
         
         public decimal Total { get; set; }
         public string Currency { get; set; }
+        
         public string PaymentMethod { get; set; }
+        public string PaymentLink { get; set; }
         
         public DateTime DueAt { get; set; }
         

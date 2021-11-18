@@ -11,6 +11,7 @@
         <PackageReference Include="MassTransit.RabbitMQ" Version="7.2.3-develop.265" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.1" NoWarn="NU1605" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.1" NoWarn="NU1605" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
         <PackageReference Include="MongoDB.Driver" Version="2.13.2" />
         <PackageReference Include="Stripe.net" Version="39.71.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />

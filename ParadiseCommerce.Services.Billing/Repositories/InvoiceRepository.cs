@@ -38,9 +38,12 @@ namespace ParadiseCommerce.Services.Billing.Repositories
             throw new System.NotImplementedException();
         }
 
-        public Task<IEnumerable<Invoice>> GetByUser(ObjectId userId)
+        public async Task<IEnumerable<Invoice>> GetByUser(ObjectId userId)
         {
-            throw new System.NotImplementedException();
+            var filter = Builders<Invoice>.Filter.Eq(c => c.CustomerId, userId);
+            var invoices = await _invoices.Find(filter).ToListAsync();
+
+            return invoices;
         }
 
         public async Task<bool> Update(ObjectId objectId, Invoice invoice)
@@ -52,6 +55,7 @@ namespace ParadiseCommerce.Services.Billing.Repositories
                 .Set(x => x.CancelledAt, invoice.CancelledAt)
                 .Set(x => x.DueAt, invoice.DueAt)
                 .Set(x => x.PaymentMethod, invoice.PaymentMethod)
+                .Set(x => x.PaymentLink, invoice.PaymentLink)
                 .Set(x => x.UpdatedAt, DateTime.Now);
                 
             var result = await _invoices.UpdateOneAsync(filter, update);
