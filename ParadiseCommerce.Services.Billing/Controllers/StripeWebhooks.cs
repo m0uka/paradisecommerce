@@ -33,6 +33,7 @@ namespace ParadiseCommerce.Services.Billing.Controllers.Gateways
         [HttpPost("webhook")]
         public async Task<IActionResult> Index()
         {
+            _logger.LogInformation("Received Stripe webhook!");
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
             
             try

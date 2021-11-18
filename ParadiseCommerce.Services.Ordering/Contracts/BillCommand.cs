@@ -36,4 +36,11 @@ namespace ParadiseCommerce.Services.Contracts
         public string OrderId { get; set; }
         public string PaymentUrl { get; set; }
     }
+    
+    public class BillPaymentFinishedResponse
+    {
+        public string OrderId { get; set; }
+        public string PaymentMethod { get; set; }
+        public DateTime PaidAt { get; set; }
+    }
 }

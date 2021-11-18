@@ -39,6 +39,9 @@ namespace ParadiseCommerce.Services.Billing
             services.AddSingleton<IMongoClient, MongoClient>(sp =>
                 new MongoClient(Configuration.GetConnectionString("MongoDb")));
             
+            // Mass Transit
+            services.AddMassTransitHostedService();
+            
             // Payment gateways
             services.AddTransient<IStripePaymentService, StripePaymentService>();
             
@@ -58,10 +61,6 @@ namespace ParadiseCommerce.Services.Billing
                 });
             });
 
-            
-            
-            services.AddMassTransitHostedService();
-            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "ParadiseCommerce.Services.Billing", Version = "v1"});

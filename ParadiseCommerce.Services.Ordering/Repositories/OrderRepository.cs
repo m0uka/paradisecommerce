@@ -24,9 +24,12 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
             return order.Id;
         }
 
-        public Task<Order> Get(ObjectId objectId)
+        public async Task<Order> Get(ObjectId objectId)
         {
-            throw new System.NotImplementedException();
+            var filter = Builders<Order>.Filter.Eq(c => c.Id, objectId);
+            var order = await _orders.Find(filter).FirstOrDefaultAsync();
+
+            return order;
         }
 
         public Task<IEnumerable<Order>> Get()
@@ -39,9 +42,16 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> Update(ObjectId objectId, Order order)
+        public async Task<bool> Update(ObjectId objectId, Order order)
         {
-            throw new System.NotImplementedException();
+            var filter = Builders<Order>.Filter.Eq(c => c.Id, objectId);
+            var update = Builders<Order>.Update
+                .Set(x => x.Status, order.Status)
+                .Set(x => x.PaymentMethod, order.PaymentMethod)
+                .Set(x => x.ActivatedAt, order.ActivatedAt);
+
+            var result = await _orders.UpdateOneAsync(filter, update);
+            return result.ModifiedCount == 1;
         }
 
         public Task<bool> Delete(ObjectId objectId)

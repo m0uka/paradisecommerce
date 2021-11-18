@@ -10,5 +10,6 @@ namespace ParadiseCommerce.Services.Ordering.Models
         public ObjectId ProductId { get; set; }
         
         public string Name { get; set; }
+        public string Description { get; set; }
     }
 }

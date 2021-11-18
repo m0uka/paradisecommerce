@@ -52,7 +52,7 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
             {
                 var product = await _productRepository.Get( ObjectId.Parse(orderItem.ProductId) );
                 if (product == null) return BadRequest("invalid_item");
-                if (orderItem.Quantity < 1) return BadRequest("invalid_quantity"); // TODO: Check for stock later
+                if (orderItem.Quantity < 1) return BadRequest("invalid_quantity"); // TODO: Check for stock later (we'll have to ask the provisioning module)
 
                 if (product.ProductType == ProductType.Physical && orderModel.ShippingAddress == null)
                     return BadRequest("no_shipping_address");
@@ -136,6 +136,7 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
             // };
             //
             // await endpoint.Send<IProvisionProductCommand>(provisionCommand);
+            
             return Ok();
         }
     }

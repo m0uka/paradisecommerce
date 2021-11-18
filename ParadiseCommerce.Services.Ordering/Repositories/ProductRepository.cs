@@ -35,8 +35,8 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
 
         public async Task<IEnumerable<Product>> Get()
         {
-            var cars = await _products.Find(_ => true).ToListAsync();
-            return cars;
+            var products = await _products.Find(_ => true).ToListAsync();
+            return products;
         }
 
         public async Task<IEnumerable<Product>> GetByGroup(ObjectId groupId)

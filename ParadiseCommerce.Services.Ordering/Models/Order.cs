@@ -28,6 +28,7 @@ namespace ParadiseCommerce.Services.Ordering.Models
         public ShippingAddress ShippingAddress { get; set; }
         
         public DateTime CreatedAt { get; set; }
+        public DateTime ActivatedAt { get; set; }
     }
 
     /// <summary>

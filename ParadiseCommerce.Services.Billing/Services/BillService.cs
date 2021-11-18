@@ -14,14 +14,14 @@ namespace ParadiseCommerce.Services.Billing.Services
     public class BillService : IBillService
     {
         private readonly IStripePaymentService _stripePaymentService;
-        private readonly ISendEndpointProvider _sendEndpointProvider;
+        private readonly IPublishEndpoint _publishEndpoint;
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly ILogger<BillService> _logger;
 
-        public BillService(IStripePaymentService stripePaymentService, ISendEndpointProvider sendEndpointProvider, IInvoiceRepository invoiceRepository, ILogger<BillService> logger)
+        public BillService(IStripePaymentService stripePaymentService, IPublishEndpoint publishEndpoint, IInvoiceRepository invoiceRepository, ILogger<BillService> logger)
         {
             _stripePaymentService = stripePaymentService;
-            _sendEndpointProvider = sendEndpointProvider;
+            _publishEndpoint = publishEndpoint;
             _invoiceRepository = invoiceRepository;
             _logger = logger;
         }
@@ -76,6 +76,7 @@ namespace ParadiseCommerce.Services.Billing.Services
 
             _logger.LogInformation($"Created {invoice.PaymentMethod} payment schema for customer {invoice.CustomerId}");
             _logger.LogInformation(paymentSchema.PaymentUrl);
+
             return paymentSchema;
         }
 
@@ -86,6 +87,18 @@ namespace ParadiseCommerce.Services.Billing.Services
             invoice.PaidAt = DateTime.Now;
             invoice.PaymentMethod = paymentMethod;
             await _invoiceRepository.Update(invoice.Id, invoice);
+
+            _logger.LogInformation(invoice.OrderId.ToString());
+            if (invoice.OrderId != null)
+            {
+                _logger.LogInformation("Publishing payment response!");
+                await _publishEndpoint.Publish(new BillPaymentFinishedResponse
+                {
+                    OrderId = invoice.OrderId.ToString(),
+                    PaymentMethod = paymentMethod,
+                    PaidAt = invoice.PaidAt.Value
+                });
+            }
         }
     }
 }

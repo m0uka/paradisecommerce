@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using ParadiseCommerce.Services.Contracts;
+using ParadiseCommerce.Services.Ordering.Consumers;
 using ParadiseCommerce.Services.Ordering.Repositories;
 
 namespace ParadiseCommerce.Services.Ordering
@@ -43,7 +44,12 @@ namespace ParadiseCommerce.Services.Ordering
 
             services.AddMassTransit(x =>
             {
-                x.UsingRabbitMq();
+                x.AddConsumer<BillPaymentFinishedConsumer>();
+                
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.ConfigureEndpoints(context);
+                });
             });
             services.AddMassTransitHostedService();
             
