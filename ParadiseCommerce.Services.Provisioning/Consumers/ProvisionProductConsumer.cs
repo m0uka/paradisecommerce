@@ -12,11 +12,14 @@ namespace ParadiseCommerce.Services.Provisioning.Consumers
             Console.WriteLine("Consuming!!");
             Console.WriteLine("Customer: " + context.Message.CustomerId);
 
-            foreach (var dat in context.Message.ProvisionVariables)
+            if (context.Message.ProvisionVariables != null)
             {
-                Console.WriteLine(dat.Key + ": " + dat.Value);
+                foreach (var dat in context.Message.ProvisionVariables)
+                {
+                    Console.WriteLine(dat.Key + ": " + dat.Value);
+                }
             }
-            
+
             return Task.CompletedTask;
         }
     }

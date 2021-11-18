@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
+using ParadiseCommerce.Contracts;
 using ParadiseCommerce.Services.Contracts;
 using ParadiseCommerce.Services.Ordering.Models;
 using ParadiseCommerce.Services.Ordering.Repositories;
@@ -13,7 +15,7 @@ namespace ParadiseCommerce.Services.Ordering.Consumers
     {
         private readonly ILogger<BillPaymentFinishedResponse> _logger;
         private readonly IOrderRepository _orderRepository;
-        
+
         public BillPaymentFinishedConsumer(ILogger<BillPaymentFinishedResponse> logger, IOrderRepository orderRepository)
         {
             _logger = logger;
@@ -40,6 +42,23 @@ namespace ParadiseCommerce.Services.Ordering.Consumers
             _logger.LogInformation($"Order {order.Id} has been paid for with {order.PaymentMethod}, and is now active!");
 
             // We can call the provisioning service from here!
+            
+            var endpoint = await context.GetSendEndpoint(new Uri("queue:provisioning-service"));
+            
+            foreach (var product in order.Products)
+            {
+                var provisionCommand = new ProvisionProductCommand
+                {
+                    CustomerId = order.UserId.ToString(),
+                    // CustomerEmail = order.,
+                    ProductId = product.ProductId,
+                    ProvisionVariables = product.ProductOptions,
+                    CustomerAddress = order.ShippingAddress,
+                    Quantity = product.Quantity
+                };
+
+                await endpoint.Send<IProvisionProductCommand>(provisionCommand);
+            }
         }
     }
 }
