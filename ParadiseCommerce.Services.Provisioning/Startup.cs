@@ -35,7 +35,7 @@ namespace ParadiseCommerce.Services.Provisioning
             {
                 x.UsingRabbitMq((context, cfg) =>
                 {
-                    cfg.Host("localhost");
+                    cfg.Host(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true" ? "host.docker.internal" : "localhost");
                     cfg.ReceiveEndpoint("provisioning-service", e =>
                     {
                         e.Consumer<ProvisionProductConsumer>();

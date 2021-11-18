@@ -48,6 +48,7 @@ namespace ParadiseCommerce.Services.Ordering
                 
                 x.UsingRabbitMq((context, cfg) =>
                 {
+                    cfg.Host(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true" ? "host.docker.internal" : "localhost");
                     cfg.ConfigureEndpoints(context);
                 });
             });

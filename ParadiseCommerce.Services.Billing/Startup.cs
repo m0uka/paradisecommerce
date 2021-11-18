@@ -57,6 +57,8 @@ namespace ParadiseCommerce.Services.Billing
             {
                 x.UsingRabbitMq((context, cfg) =>
                 {
+                    cfg.Host(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true" ? "" : "");
+          
                     cfg.ReceiveEndpoint("billing-service", e =>
                     {
                         e.Consumer<BillConsumer>(context);
