@@ -18,6 +18,7 @@ namespace ParadiseCommerce.Services.Ordering.Models
         public ProductType ProductType { get; set; }
         
         public ProductPricing Pricing { get; set; }
+        public ProductImages Images { get; set; }
         
         public bool IsHidden { get; set; }
         

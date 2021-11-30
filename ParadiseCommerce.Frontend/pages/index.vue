@@ -1,3 +1,5 @@
 <template>
-    <p>Hello!</p>
+    <div>
+        <Navbar />
+    </div>
 </template>

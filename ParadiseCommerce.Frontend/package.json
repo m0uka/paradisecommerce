@@ -10,6 +10,10 @@
     "nuxt3": "latest"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.4.2",
+    "@heroicons/vue": "^1.0.5",
+    "@tiptap/starter-kit": "^2.0.0-beta.144",
+    "@tiptap/vue-3": "^2.0.0-beta.81",
     "autoprefixer": "^10.4.0",
     "postcss": "^8.4.0",
     "tailwindcss": "^2.2.19"
