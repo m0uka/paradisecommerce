@@ -78,7 +78,7 @@ export default {
 
             this.loading = false
 
-            if (result.status == 200)
+            if (!result.status || result.status == 200)
                 this.$router.push('/')
         }
     }
