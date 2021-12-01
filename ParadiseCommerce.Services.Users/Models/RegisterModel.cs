@@ -11,7 +11,7 @@ namespace ParadiseCommerce.Services.Users.Models
         [Required]  
         public string Email { get; set; }  
   
-        [Required]  
+        [Required, MinLength(6)]  
         public string Password { get; set; }
     }
 }

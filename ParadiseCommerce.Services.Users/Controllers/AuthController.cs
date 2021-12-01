@@ -82,7 +82,7 @@ namespace ParadiseCommerce.Services.Users.Controllers
         {  
             var userExists = await _userManager.FindByNameAsync(model.Username);  
             if (userExists != null)  
-                return StatusCode(StatusCodes.Status409Conflict, "This user already exists.");  
+                return StatusCode(StatusCodes.Status409Conflict, new ErrorModel(409, "A user with the same username already exists!"));  
   
             User user = new User()  
             {  
@@ -91,9 +91,19 @@ namespace ParadiseCommerce.Services.Users.Controllers
                 UserName = model.Username  
             };
 
-            var result = await _userManager.CreateAsync(user, model.Password);  
-            if (!result.Succeeded)  
-                return StatusCode(StatusCodes.Status500InternalServerError, "User creation failed!");
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(error.Code, error.Description);
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             return Ok();
         }  

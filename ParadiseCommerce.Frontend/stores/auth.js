@@ -38,6 +38,14 @@ export const useAuthStore = defineStore('auth', {
                 jwt: data.token,
                 expiration: data.expiration,
             }))
+
+            return data
+        },
+
+        async register(username, password, email) {
+            const result = await auth.register(username, password, email)
+            await this.login(username, password)
+            return result
         },
 
         checkJWT(token) {
