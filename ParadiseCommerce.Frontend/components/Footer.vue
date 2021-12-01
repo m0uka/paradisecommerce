@@ -57,29 +57,21 @@
               </div>
             </div>
           </div>
-          <div class="mt-16 md:mt-16 xl:mt-0">
-            <h3 class="text-sm font-medium text-gray-900">Sign up for our newsletter</h3>
-            <p class="mt-6 text-sm text-gray-500">The latest deals and savings, sent to your inbox weekly.</p>
-            <form class="mt-2 flex sm:max-w-md">
-              <label for="email-address" class="sr-only">Email address</label>
-              <input id="email-address" type="text" autocomplete="email" required="" class="appearance-none min-w-0 w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 text-base text-primary-500 placeholder-gray-500 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" />
-              <div class="ml-4 flex-shrink-0">
-                <button type="submit" class="w-full bg-primary-600 border border-transparent rounded-md shadow-sm py-2 px-4 flex items-center justify-center text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                  Sign up
-                </button>
-              </div>
-            </form>
-          </div>
+          
         </div>
 
         <div class="border-t border-gray-200 py-10">
-          <p class="text-sm text-gray-500">Copyright &copy; 2021 Clothing Company Inc.</p>
+          <p class="text-sm text-gray-500">Copyright &copy; 2021 {{ storefront?.name }}</p>
         </div>
       </div>
     </footer>
 </template>
 
-<script>
+<script setup>
+
+import { useStorefrontStore } from '@/stores/storefront'
+const storefront = useStorefrontStore()
+
 const footerNavigation = {
   shop: [
     { name: 'Bags', href: '#' },
@@ -107,13 +99,5 @@ const footerNavigation = {
     { name: 'Instagram', href: '#' },
     { name: 'Pinterest', href: '#' },
   ],
-}
-
-export default {
-    setup() {
-        return {
-            footerNavigation
-        }
-    }
 }
 </script>

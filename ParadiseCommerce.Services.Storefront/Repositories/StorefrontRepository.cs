@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using ParadiseCommerce.Services.Storefront.Models;
@@ -32,9 +33,18 @@ namespace ParadiseCommerce.Services.Storefront.Repositories
         public async Task<bool> Update(Models.Storefront storefront)
         {
             var update = Builders<Models.Storefront>.Update
-                .Set(x => x.StoreName, storefront.StoreName)
-                .Set(x => x.StoreLogo, storefront.StoreLogo)
-                .Set(x => x.FrontPage, storefront.FrontPage);
+                .Set(x => x.UpdatedAt, DateTime.UtcNow);
+
+            if (storefront.StoreName != null && storefront.StoreLogo != null)
+            {
+                update = update.Set(x => x.StoreName, storefront.StoreName)
+                    .Set(x => x.StoreLogo, storefront.StoreLogo);
+            }
+
+            if (storefront.FrontPage != null)
+            {
+                update = update.Set(x => x.FrontPage, storefront.FrontPage);
+            }
 
             await _frontPages.FindOneAndUpdateAsync(x => true, update);
             return true;
