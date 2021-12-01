@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using ParadiseCommerce.Services.Storefront.Repositories;
@@ -25,9 +26,19 @@ namespace ParadiseCommerce.Services.Storefront.Controllers
         }
         
         [HttpPost("update")]
+        // [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Models.Storefront>> UpdateStorefront([FromBody] Models.Storefront storefront)
         {
-            await _storefrontRepository.Update(storefront);
+            var store = await _storefrontRepository.Get();
+            if (store == null)
+            {
+                await _storefrontRepository.Create(storefront);
+            }
+            else
+            {
+                await _storefrontRepository.Update(storefront);
+            }
+
             return Ok();
         }
     }

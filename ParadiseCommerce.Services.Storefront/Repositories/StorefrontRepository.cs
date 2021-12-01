@@ -33,6 +33,7 @@ namespace ParadiseCommerce.Services.Storefront.Repositories
         {
             var update = Builders<Models.Storefront>.Update
                 .Set(x => x.StoreName, storefront.StoreName)
+                .Set(x => x.StoreLogo, storefront.StoreLogo)
                 .Set(x => x.FrontPage, storefront.FrontPage);
 
             await _frontPages.FindOneAndUpdateAsync(x => true, update);

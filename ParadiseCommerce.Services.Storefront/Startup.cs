@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
+using ParadiseCommerce.Services.Storefront.Repositories;
 
 namespace ParadiseCommerce.Services.Storefront
 {
@@ -32,6 +33,8 @@ namespace ParadiseCommerce.Services.Storefront
         {
             services.AddSingleton<IMongoClient, MongoClient>(sp =>
                 new MongoClient(Configuration.GetConnectionString("MongoDb")));
+
+            services.AddTransient<IStorefrontRepository, StorefrontRepository>();
             
             // Adding Authentication
             services.AddAuthentication(options =>

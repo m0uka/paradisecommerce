@@ -24,5 +24,10 @@ export default defineNuxtConfig({
             postcssOptions: require('./postcss.config.js'),
         },
     },
+
+    buildModules: [
+        ['@pinia/nuxt', { disableVuex: true }]
+    ],
+
     ssr: false
 })

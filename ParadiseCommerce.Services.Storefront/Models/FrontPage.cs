@@ -9,6 +9,9 @@ namespace ParadiseCommerce.Services.Storefront.Models
         public string Subtitle { get; set; }
         public string ImageUrl { get; set; }
         
+        public string MainButtonText { get; set; }
+        public string MainButtonLocation { get; set; }
+        
         public List<string> FeaturedCategories { get; set; }
     }
 }

@@ -1,5 +1,15 @@
 <template>
-    <div>
-        <Navbar />
-    </div>
+    <RootComponent>
+        <Navbar>
+            <FrontHero />
+        </Navbar>
+
+        <main>
+            <FrontCategories />
+            <FrontFeatured />
+            <FrontFavorite />
+        </main>
+
+        <Footer />
+    </RootComponent>
 </template>

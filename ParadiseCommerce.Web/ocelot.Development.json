@@ -76,7 +76,19 @@
       ],
       "UpstreamPathTemplate": "/api/auth/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/store/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5005"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/store/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
     }
-    
   ]
 }
