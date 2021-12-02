@@ -8,16 +8,16 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
     public interface ICategoryRepository
     {
         // Create
-        Task<ObjectId> Create(ProductCategory product);
+        Task<string> Create(ProductCategory product);
         
         // Read
-        Task<ProductCategory> Get(ObjectId objectId);
+        Task<ProductCategory> Get(string objectId);
         Task<IEnumerable<ProductCategory>> Get();
 
         // Update
-        Task<bool> Update(ObjectId objectId, ProductCategory product);
+        Task<bool> Update(string objectId, ProductCategory product);
         
         // Delete
-        Task<bool> Delete(ObjectId objectId);
+        Task<bool> Delete(string objectId);
     }
 }

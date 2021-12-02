@@ -11,9 +11,13 @@ namespace ParadiseCommerce.Services.Ordering.Models
     /// </summary>
     public class Order
     {
-        public ObjectId Id { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
         
-        public ObjectId UserId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string UserId { get; set; }
+        
         public List<OrderItem> Products { get; set; }
         
         [BsonRepresentation(BsonType.String)]

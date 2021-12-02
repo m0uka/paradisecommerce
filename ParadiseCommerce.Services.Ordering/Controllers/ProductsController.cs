@@ -41,14 +41,14 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
         [HttpGet("category/{id}")]
         public async Task<IActionResult> GetByCategory(string id)
         {
-            var product = await _productRepository.GetByGroup(ObjectId.Parse(id));
+            var product = await _productRepository.GetByGroup(id);
             return new JsonResult(product);
         }
         
         [HttpGet("get/{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            var product = await _productRepository.Get(ObjectId.Parse(id));
+            var product = await _productRepository.Get(id);
             return new JsonResult(product);
         }
         

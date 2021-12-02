@@ -26,7 +26,7 @@ namespace ParadiseCommerce.Services.Ordering.Consumers
         {
             _logger.LogInformation($"Received bill payment finished response, order id: {context.Message.OrderId}");
 
-            var order = await _orderRepository.Get(ObjectId.Parse(context.Message.OrderId));
+            var order = await _orderRepository.Get(context.Message.OrderId);
             if (order == null)
             {
                 _logger.LogWarning($"Received a bill payment, but it has an invalid OrderId! Ignoring!");

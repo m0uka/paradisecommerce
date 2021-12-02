@@ -19,13 +19,13 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
             _products = collection;
         }
 
-        public async Task<ObjectId> Create(Product product)
+        public async Task<string> Create(Product product)
         {
             await _products.InsertOneAsync(product);
             return product.Id;
         }
 
-        public async Task<Product> Get(ObjectId objectId)
+        public async Task<Product> Get(string objectId)
         {
             var filter = Builders<Product>.Filter.Eq(c => c.Id, objectId);
             var product = await _products.Find(filter).FirstOrDefaultAsync();
@@ -39,7 +39,7 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
             return products;
         }
 
-        public async Task<IEnumerable<Product>> GetByGroup(ObjectId groupId)
+        public async Task<IEnumerable<Product>> GetByGroup(string groupId)
         {
             var filter = Builders<Product>.Filter.Eq(c => c.GroupId, groupId);
             var products = await _products.Find(filter).ToListAsync();
@@ -47,7 +47,7 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
             return products;
         }
 
-        public async Task<bool> Update(ObjectId objectId, Product product)
+        public async Task<bool> Update(string objectId, Product product)
         {
             var filter = Builders<Product>.Filter.Eq(c => c.Id, objectId);
             var update = Builders<Product>.Update
@@ -62,7 +62,7 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
             return result.ModifiedCount == 1;
         }
 
-        public async Task<bool> Delete(ObjectId objectId)
+        public async Task<bool> Delete(string objectId)
         {
             var filter = Builders<Product>.Filter.Eq(c => c.Id, objectId);
             var result = await _products.DeleteOneAsync(filter);

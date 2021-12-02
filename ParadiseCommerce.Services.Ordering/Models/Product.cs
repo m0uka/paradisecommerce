@@ -7,8 +7,12 @@ namespace ParadiseCommerce.Services.Ordering.Models
 {
     public class Product
     {
-        public ObjectId Id { get; set; }
-        public ObjectId GroupId { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+        
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string GroupId { get; set; }
         
         public string Name { get; set; }
         public string Slug { get; set; }

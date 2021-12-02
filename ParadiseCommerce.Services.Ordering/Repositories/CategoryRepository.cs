@@ -18,15 +18,15 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
             _categories = collection;
         }
         
-        public async Task<ObjectId> Create(ProductCategory category)
+        public async Task<string> Create(ProductCategory category)
         {
             await _categories.InsertOneAsync(category);
             return category.Id;
         }
 
-        public async Task<ProductCategory> Get(ObjectId objectId)
+        public async Task<ProductCategory> Get(string objectId)
         {
-            var filter = Builders<ProductCategory>.Filter.Eq(c => c.Id, objectId);
+            var filter = Builders<ProductCategory>.Filter.Eq(c => c.Id, objectId.ToString());
             var product = await _categories.Find(filter).FirstOrDefaultAsync();
 
             return product;
@@ -37,7 +37,7 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
             return await _categories.Find(_ => true).ToListAsync();
         }
 
-        public async Task<bool> Update(ObjectId objectId, ProductCategory category)
+        public async Task<bool> Update(string objectId, ProductCategory category)
         {
             var filter = Builders<ProductCategory>.Filter.Eq(c => c.Id, objectId);
             var update = Builders<ProductCategory>.Update
@@ -48,7 +48,7 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
             return result.ModifiedCount == 1;
         }
 
-        public async Task<bool> Delete(ObjectId objectId)
+        public async Task<bool> Delete(string objectId)
         {
             var filter = Builders<ProductCategory>.Filter.Eq(c => c.Id, objectId);
             var result = await _categories.DeleteOneAsync(filter);

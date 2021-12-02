@@ -38,8 +38,8 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            
-            var orders = await _orderRepository.GetByUser(ObjectId.Parse(userId));
+
+            var orders = await _orderRepository.GetByUser(userId);
             return Ok(orders);
         }
         
@@ -60,7 +60,7 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
             Dictionary<string, Product> products = new();
             foreach (var orderItem in orderModel.ProductInfos)
             {
-                var product = await _productRepository.Get( ObjectId.Parse(orderItem.ProductId) );
+                var product = await _productRepository.Get( orderItem.ProductId );
                 if (product == null) return BadRequest("invalid_item");
                 if (orderItem.Quantity < 1) return BadRequest("invalid_quantity"); // TODO: Check for stock later (we'll have to ask the provisioning module)
 
@@ -78,7 +78,7 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
 
             var order = new Order
             {
-                UserId = ObjectId.Parse(userId),
+                UserId = userId,
                 
                 Amount = totalCost,
                 Currency = usedCurrency,

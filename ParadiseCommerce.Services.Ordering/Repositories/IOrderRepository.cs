@@ -8,17 +8,17 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
     public interface IOrderRepository
     {
         // Create
-        Task<ObjectId> Create(Order order);
+        Task<string> Create(Order order);
         
         // Read
-        Task<Order> Get(ObjectId objectId);
+        Task<Order> Get(string objectId);
         Task<IEnumerable<Order>> Get();
-        Task<IEnumerable<Order>> GetByUser(ObjectId userId);
+        Task<IEnumerable<Order>> GetByUser(string userId);
         
         // Update
-        Task<bool> Update(ObjectId objectId, Order order);
+        Task<bool> Update(string objectId, Order order);
         
         // Delete
-        Task<bool> Delete(ObjectId objectId);
+        Task<bool> Delete(string objectId);
     }
 }

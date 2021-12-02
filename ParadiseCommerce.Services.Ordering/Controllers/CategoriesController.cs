@@ -9,16 +9,16 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoiesController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private readonly ICategoryRepository _categoryRepository;
 
-        public CategoiesController(ICategoryRepository categoryRepository)
+        public CategoriesController(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }
         
-        [HttpPost]
+        [HttpPost("update")]
         [Authorize(Roles="Admin")]
         public async Task<IActionResult> Update([FromBody] ProductCategory category)
         {
@@ -26,22 +26,22 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
             return new JsonResult(id.ToString());
         }
         
-        [HttpPost]
-        [Authorize(Roles="Admin")]
+        [HttpPost("create")]
+        // [Authorize(Roles="Admin")]
         public async Task<IActionResult> Create([FromBody] ProductCategory category)
         {
             var id = await _categoryRepository.Create(category);
             return new JsonResult(id.ToString());
         }
         
-        [HttpGet("{id}")]
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            var categories = await _categoryRepository.Get(ObjectId.Parse(id));
+            var categories = await _categoryRepository.Get(id);
             return new JsonResult(categories);
         }
         
-        [HttpGet]
+        [HttpGet("get")]
         public async Task<IActionResult> Get()
         {
             var categories = await _categoryRepository.Get();

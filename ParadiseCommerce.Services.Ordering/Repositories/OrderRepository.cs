@@ -18,13 +18,13 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
             _orders = collection;
         }
         
-        public async Task<ObjectId> Create(Order order)
+        public async Task<string> Create(Order order)
         {
             await _orders.InsertOneAsync(order);
             return order.Id;
         }
 
-        public async Task<Order> Get(ObjectId objectId)
+        public async Task<Order> Get(string objectId)
         {
             var filter = Builders<Order>.Filter.Eq(c => c.Id, objectId);
             var order = await _orders.Find(filter).FirstOrDefaultAsync();
@@ -38,7 +38,7 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
             return orders;
         }
 
-        public async Task<IEnumerable<Order>> GetByUser(ObjectId userId)
+        public async Task<IEnumerable<Order>> GetByUser(string userId)
         {
             var filter = Builders<Order>.Filter.Eq(c => c.UserId, userId);
             var orders = await _orders.Find(filter).ToListAsync();
@@ -46,7 +46,7 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
             return orders;
         }
 
-        public async Task<bool> Update(ObjectId objectId, Order order)
+        public async Task<bool> Update(string objectId, Order order)
         {
             var filter = Builders<Order>.Filter.Eq(c => c.Id, objectId);
             var update = Builders<Order>.Update
@@ -58,7 +58,7 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
             return result.ModifiedCount == 1;
         }
 
-        public Task<bool> Delete(ObjectId objectId)
+        public Task<bool> Delete(string objectId)
         {
             throw new System.NotImplementedException();
         }
