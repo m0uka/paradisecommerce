@@ -51,6 +51,7 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
         {
             var filter = Builders<Product>.Filter.Eq(c => c.Id, objectId);
             var update = Builders<Product>.Update
+                .Set(x => x.GroupId, product.GroupId)
                 .Set(x => x.Name, product.Name)
                 .Set(x => x.Description, product.Description)
                 .Set(x => x.Slug, product.Slug)

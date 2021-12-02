@@ -6,7 +6,7 @@
 
         <main>
             <FrontCategories />
-            <FrontFeatured />
+            <!-- <FrontFeatured /> -->
             <FrontFavorite />
         </main>
 

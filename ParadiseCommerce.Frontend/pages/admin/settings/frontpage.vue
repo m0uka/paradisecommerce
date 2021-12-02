@@ -1,5 +1,5 @@
 <template>
-    <AdminLayout>
+    <SettingsLayout>
         
         <Card>
             <CardContent title="Hero" subtitle="Front page hero settings.">
@@ -16,7 +16,13 @@
                         <InputLabel>Hero Subtitle</InputLabel>
                         <InputDescription>The subtitle of the large text on the front page</InputDescription>
                         <TextInput v-model="frontPage.subtitle" />
-                    </div> 
+                    </div>
+
+                    <div class="col-span-4 sm:col-span-2">
+                        <InputLabel>Hero Image</InputLabel>
+                        <InputDescription>The URL of the large image on the front page</InputDescription>
+                        <TextInput v-model="frontPage.imageUrl" />
+                    </div>
                     
                 </div>
 
@@ -28,7 +34,7 @@
         </Card>
 
 
-    </AdminLayout>
+    </SettingsLayout>
 </template>
 
 <script>

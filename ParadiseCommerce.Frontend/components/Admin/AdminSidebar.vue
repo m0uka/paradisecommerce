@@ -31,7 +31,7 @@ import {
 } from '@heroicons/vue/outline'
 
 const subNavigation = ref([
-    { name: 'General', href: '/admin', icon: CogIcon },
-    { name: 'Front Page', href: '/admin/frontpage', icon: DocumentDuplicateIcon },
+    { name: 'General', href: '/admin/settings', icon: CogIcon },
+    { name: 'Front Page', href: '/admin/settings/frontpage', icon: DocumentDuplicateIcon },
 ])
 </script>

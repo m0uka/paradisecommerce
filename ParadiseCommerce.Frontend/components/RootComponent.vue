@@ -7,11 +7,13 @@
 <script>
 import { useStorefrontStore } from "@/stores/storefront"
 import { useAuthStore } from "@/stores/auth"
+import { useProductsStore } from "@/stores/products"
 
 export default {
-    setup() {
+    created() {
         const storefrontStore = useStorefrontStore()
         const authStore = useAuthStore()
+        const productsStore = useProductsStore()
 
         storefrontStore.fetch()
         authStore.loadUser()

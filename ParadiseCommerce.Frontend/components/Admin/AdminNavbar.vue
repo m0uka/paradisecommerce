@@ -23,9 +23,9 @@
           
         </div>
         <nav class="hidden lg:py-2 lg:flex lg:space-x-8" aria-label="Global">
-          <a v-for="item in navigation" :key="item.name" :href="item.href" class="rounded-md py-2 px-3 inline-flex items-center text-sm font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900">
+          <NuxtLink v-for="item in navigation" :key="item.name" :to="item.href" :class="[ (item.exact ? item.href == $route.path : $route.path.startsWith(item.href)) ? 'bg-gray-100 text-gray-900' : '', 'rounded-md py-2 px-3 inline-flex items-center text-sm font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900']">
             {{ item.name }}
-          </a>
+          </NuxtLink>
         </nav>
       </div>
 
@@ -61,10 +61,9 @@ import {
 } from '@heroicons/vue/outline'
 
 const navigation = [
-  { name: 'Dashboard', href: '#' },
-  { name: 'Jobs', href: '#' },
-  { name: 'Applicants', href: '#' },
-  { name: 'Company', href: '#' },
+  { name: 'Dashboard', href: '/admin', exact: true },
+  { name: 'Products', href: '/admin/products' },
+  { name: 'Settings', href: '/admin/settings' },
 ]
 
 export default {

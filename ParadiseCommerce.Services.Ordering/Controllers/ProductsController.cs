@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -21,21 +22,37 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
             _productRepository = productRepository;
         }
         
-        [HttpPost]
-        public async Task<IActionResult> Create(Product product)
+        [HttpPost("update")]
+        [Authorize(Roles="Admin")]
+        public async Task<IActionResult> Update([FromBody] Product product)
+        {
+            var id = await _productRepository.Update(product.Id, product);
+            return new JsonResult(id.ToString());
+        }
+        
+        [HttpPost("create")]
+        [Authorize(Roles="Admin")]
+        public async Task<IActionResult> Create([FromBody] Product product)
         {
             var id = await _productRepository.Create(product);
             return new JsonResult(id.ToString());
         }
         
-        [HttpGet("{id}")]
+        [HttpGet("category/{id}")]
+        public async Task<IActionResult> GetByCategory(string id)
+        {
+            var product = await _productRepository.GetByGroup(ObjectId.Parse(id));
+            return new JsonResult(product);
+        }
+        
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> Get(string id)
         {
             var product = await _productRepository.Get(ObjectId.Parse(id));
             return new JsonResult(product);
         }
         
-        [HttpGet]
+        [HttpGet("get")]
         public async Task<IActionResult> Get()
         {
             var products = await _productRepository.Get();
