@@ -22,6 +22,11 @@
                             </div>
 
                             <div class="col-span-4 sm:col-span-2">
+                                <InputLabel>Category</InputLabel>
+                                <Dropdown :data="categories" v-model="categoryName" />
+                            </div>
+
+                            <div class="col-span-4 sm:col-span-2">
                                 <InputLabel>Slug</InputLabel>
                                 <InputDescription>SEO-friendly URL slug</InputDescription>
                                 <TextInput v-model="productGeneral.slug" placeholder="my-cool-tshirt" />
@@ -67,14 +72,20 @@ import productsAPI from '@/api/products'
 let productGeneral = ref({})
 let loadingGeneral = ref(false)
 
+let categoryName = ref('')
+
 const route = useRoute()
 
 const productsStore = useProductsStore()
-const { products } = storeToRefs(productsStore)
+const { products, categories } = storeToRefs(productsStore)
 const product = computed( () => products?.value?.find(x => x.id === route.params.id) )
 
 watch(product, (val) => {
     productGeneral.value = val
+})
+
+watch(categories, (val) => {
+    categoryName.value = val.find(category => category.id == productGeneral.value.groupId)?.name
 })
 
 async function updateGeneral() {
@@ -82,7 +93,7 @@ async function updateGeneral() {
 
     let productCopy = {}
     Object.assign(productCopy, productGeneral.value)
-    console.log(productCopy)
+    productCopy.groupId = productsStore.categories.find(category => category.name == categoryName.value)?.id
 
     await productsAPI.updateProduct(productCopy)
     loadingGeneral.value = false
