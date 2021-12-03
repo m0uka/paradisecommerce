@@ -58,6 +58,16 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
                 .Set(x => x.IsHidden, product.IsHidden)
                 .Set(x => x.ProductType, product.ProductType)
                 .Set(x => x.UpdatedAt, DateTime.Now);
+
+            if (product.Images != null)
+            {
+                update = update.Set(x => x.Images, product.Images);
+            }
+
+            if (product.Pricing != null)
+            {
+                update = update.Set(x => x.Pricing, product.Pricing);
+            }
                 
             var result = await _products.UpdateOneAsync(filter, update);
             return result.ModifiedCount == 1;

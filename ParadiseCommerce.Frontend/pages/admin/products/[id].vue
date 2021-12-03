@@ -56,6 +56,40 @@
                     </Card>
                 </div>
 
+
+                <CardDescription name="Images" description="The image presentation of the product." />
+
+                <div class="mt-5 md:mt-0 md:col-span-2">
+                    <Card>
+                        <CardContent>
+
+                        <div class="grid grid-cols-2 gap-6">
+                            
+                            <div class="col-span-4 sm:col-span-2">
+                                <InputLabel>Listing</InputLabel>
+                                <TextInput v-model="productImages.listing" />
+                            </div>
+
+                            <div class="col-span-4 sm:col-span-2">
+                                <InputLabel>Listing Small</InputLabel>
+                                <TextInput v-model="productImages.listingSmall" />
+                            </div>
+
+                            <div class="col-span-4 sm:col-span-2">
+                                <InputLabel>Bigspot</InputLabel>
+                                <TextInput v-model="productImages.bigspot" />
+                            </div>
+
+                        </div>
+
+                        </CardContent>
+
+                        <CardFooter>
+                            <Button :loading="loadingImages" @click="updateImages">Update</Button>
+                        </CardFooter>
+                    </Card>
+                </div>
+
             </div>
         </div>
 
@@ -70,7 +104,10 @@ import { computed, ref, watch } from 'vue'
 import productsAPI from '@/api/products'
 
 let productGeneral = ref({})
+let productImages = ref({})
+
 let loadingGeneral = ref(false)
+let loadingImages = ref(false)
 
 let categoryName = ref('')
 
@@ -82,6 +119,7 @@ const product = computed( () => products?.value?.find(x => x.id === route.params
 
 watch(product, (val) => {
     productGeneral.value = val
+    if (val) productImages.value = val.images ?? {}
 })
 
 watch(categories, (val) => {
@@ -97,6 +135,19 @@ async function updateGeneral() {
 
     await productsAPI.updateProduct(productCopy)
     loadingGeneral.value = false
+}
+
+async function updateImages() {
+    loadingImages.value = true
+
+    let productCopy = {}
+    Object.assign(productCopy, productGeneral.value)
+    productCopy.images = {}
+
+    Object.assign(productCopy.images, productImages.value)
+
+    await productsAPI.updateProduct(productCopy)
+    loadingImages.value = false
 }
 
 </script>
