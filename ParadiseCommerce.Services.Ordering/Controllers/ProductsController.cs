@@ -23,7 +23,7 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
         }
         
         [HttpPost("update")]
-        [Authorize(Roles="Admin")]
+        // [Authorize(Roles="Admin")]
         public async Task<IActionResult> Update([FromBody] Product product)
         {
             var id = await _productRepository.Update(product.Id, product);
@@ -31,7 +31,7 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
         }
         
         [HttpPost("create")]
-        [Authorize(Roles="Admin")]
+        // [Authorize(Roles="Admin")]
         public async Task<IActionResult> Create([FromBody] Product product)
         {
             var id = await _productRepository.Create(product);

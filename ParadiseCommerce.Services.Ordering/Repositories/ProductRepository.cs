@@ -56,6 +56,7 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
                 .Set(x => x.Description, product.Description)
                 .Set(x => x.Slug, product.Slug)
                 .Set(x => x.IsHidden, product.IsHidden)
+                .Set(x => x.ProductType, product.ProductType)
                 .Set(x => x.UpdatedAt, DateTime.Now);
                 
             var result = await _products.UpdateOneAsync(filter, update);

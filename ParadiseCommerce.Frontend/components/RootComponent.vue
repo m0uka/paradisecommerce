@@ -17,6 +17,7 @@ export default {
 
         storefrontStore.fetch()
         authStore.loadUser()
+        productsStore.fetch()
         productsStore.fetchCategories()
     }
 }

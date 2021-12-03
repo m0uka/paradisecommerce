@@ -8,7 +8,7 @@
         <Table>
             <TableHeader :items="['Product', 'Status', 'Type', 'Category']" />
             <TableBody>
-                <tr v-for="product in products" :key="product.id">
+                <tr v-for="product in products" :key="product.id" class="cursor-pointer" v-on:click="selectProduct(product)">
                     <td class="px-6 py-4 whitespace-nowrap text-lg font-semibold text-gray-800">
                         {{ product.name }}
                     </td>
@@ -24,7 +24,7 @@
                     </td>
 
                     <td class="px-6 py-4 whitespace-nowrap text-md text-gray-600">
-                        Test
+                        {{ productsStore.categories.find(category => category.id == product.groupId)?.name ?? 'None' }}
                     </td>
                 </tr>
                 
@@ -37,9 +37,15 @@
 <script setup>
 import { useProductsStore } from "@/stores/products"
 import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const productsStore = useProductsStore()
-productsStore.fetch()
-
 const { products } = storeToRefs(productsStore)
+
+
+function selectProduct(product) {
+    router.push(`/admin/products/${product.id}`)
+}
+
 </script>

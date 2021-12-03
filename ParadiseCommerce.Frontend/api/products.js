@@ -16,5 +16,10 @@ export default {
     async createCategory(category) {
         const response = await post("categories/create", category)
         return response
+    },
+
+    async updateProduct(product) {
+        const response = await post("products/update", product)
+        return response
     }
 }
