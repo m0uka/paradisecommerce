@@ -19,10 +19,18 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
         }
         
         [HttpPost("update")]
-        [Authorize(Roles="Admin")]
+        // [Authorize(Roles="Admin")]
         public async Task<IActionResult> Update([FromBody] ProductCategory category)
         {
             var id = await _categoryRepository.Update(category.Id, category);
+            return new JsonResult(id.ToString());
+        }
+        
+        [HttpPost("delete")]
+        // [Authorize(Roles="Admin")]
+        public async Task<IActionResult> Delete([FromBody] string categoryId)
+        {
+            var id = await _categoryRepository.Delete(categoryId);
             return new JsonResult(id.ToString());
         }
         

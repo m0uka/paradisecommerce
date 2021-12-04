@@ -63,6 +63,7 @@ import {
 const navigation = [
   { name: 'Dashboard', href: '/admin', exact: true },
   { name: 'Products', href: '/admin/products' },
+  { name: 'Categories', href: '/admin/categories' },
   { name: 'Settings', href: '/admin/settings' },
 ]
 

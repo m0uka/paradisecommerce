@@ -18,6 +18,16 @@ export default {
         return response
     },
 
+    async updateCategory(category) {
+        const response = await post("categories/update", category)
+        return response
+    },
+
+    async deleteCategory(id) {
+        const response = await post("categories/delete", id)
+        return response
+    },
+
     async updateProduct(product) {
         const response = await post("products/update", product)
         return response
