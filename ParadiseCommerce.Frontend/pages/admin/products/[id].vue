@@ -2,8 +2,30 @@
     <AdminLayout>
         
         <Heading>
-            <HeadingTitle>{{ product?.name ?? "Loading.." }}</HeadingTitle>
+            <HeadingTitle>{{ !isCreating ? (product?.name ?? "Loading..") : 'Create new product' }}</HeadingTitle>
         </Heading>
+
+        <Modal v-model:open="deleteModal">
+            <template v-slot:icon>
+                <ExclamationIcon class="h-6 w-6 text-red-600" aria-hidden="true" />
+            </template>
+
+            <template v-slot:content>
+                <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900">
+                    Delete product
+                </DialogTitle>
+                <div class="mt-2">
+                    <p class="text-sm text-gray-500">
+                        Are you sure you want to delete your product? This action is irreversible.
+                    </p>
+                </div>
+            </template>
+
+            <template v-slot:footer>
+                <Button @click="deleteProduct()" color="bg-red-700 hover:bg-red-800 text-white">Delete</Button>
+                <ButtonSecondary @click="deleteModal = false">Cancel</ButtonSecondary>
+            </template>
+        </Modal>
 
         <div>
             <div class="md:grid md:grid-cols-3 md:gap-6">
@@ -49,10 +71,6 @@
                         </div>
 
                         </CardContent>
-
-                        <CardFooter>
-                            <Button :loading="loadingGeneral" @click="updateGeneral">Update</Button>
-                        </CardFooter>
                     </Card>
                 </div>
 
@@ -72,10 +90,6 @@
                         </div>
 
                         </CardContent>
-
-                        <CardFooter>
-                            <Button :loading="loadingPrices" @click="updatePrices">Update</Button>
-                        </CardFooter>
                     </Card>
                 </div>
 
@@ -106,12 +120,22 @@
                         </div>
 
                         </CardContent>
+                    </Card>
+                </div>
 
+
+                <CardDescription name="Finish" description="Finish setting up the product here." />
+
+                <div class="mt-5 md:mt-0 md:col-span-2">
+                    <Card>
                         <CardFooter>
-                            <Button :loading="loadingImages" @click="updateImages">Update</Button>
+                            <ButtonSecondary @click="router.push('/admin/products')">Go back</ButtonSecondary>
+                            <Button color="bg-red-700 hover:bg-red-800 text-white mr-3" v-if="!isCreating" @click="deleteModal = true">Delete</Button>
+                            <Button :loading="loading" @click="update">{{ isCreating ? 'Create product' : 'Update product' }}</Button>
                         </CardFooter>
                     </Card>
                 </div>
+
 
             </div>
         </div>
@@ -122,31 +146,37 @@
 <script setup>
 import { useProductsStore } from "@/stores/products"
 import { storeToRefs } from 'pinia'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { computed, ref, watch } from 'vue'
 import productsAPI from '@/api/products'
+
+import { DialogTitle } from '@headlessui/vue'
+import { ExclamationIcon } from '@heroicons/vue/outline'
+
+const route = useRoute()
+const router = useRouter()
+
+const isCreating = route.params.id == 'create'
 
 let productGeneral = ref({})
 let productImages = ref({})
 
-let loadingGeneral = ref(false)
-let loadingImages = ref(false)
-let loadingPrices = ref(false)
+let deleteModal = ref(false)
+let loading = ref(false)
 
 let price = ref()
 let currency = ref('USD')
 
 let categoryName = ref('')
 
-const route = useRoute()
-
 const productsStore = useProductsStore()
 const { products, categories } = storeToRefs(productsStore)
 const product = computed( () => products?.value?.find(x => x.id === route.params.id) )
 
+// tady muze byt race condition, lol
 watch(product, (val) => {
-    productGeneral.value = val
     if (val) {
+        productGeneral.value = val
         productImages.value = val.images ?? {}
         chooseCurrency()
     }
@@ -157,34 +187,27 @@ watch(categories, (val) => {
 })
 
 function chooseCurrency(val) {
-    const pricing = product.value.pricing || {}
-    const firstKey = Object.keys(pricing.currencyPrices)[0]
+    if (product.value) {
+        const pricing = product.value.pricing || {}
+        const firstKey = Object.keys(pricing.currencyPrices)[0]
 
-    currency.value = firstKey
-    price.value = pricing.currencyPrices[firstKey ?? 'CZK']
+        currency.value = firstKey
+        price.value = pricing.currencyPrices[firstKey ?? 'CZK']
+    }
 }
 
 watch(currency, (val) => {
     chooseCurrency(val)
 })
 
-async function updateGeneral() {
-    loadingGeneral.value = true
+async function update() {
+    loading.value = true
 
     let productCopy = {}
     Object.assign(productCopy, productGeneral.value)
+
     productCopy.groupId = productsStore.categories.find(category => category.name == categoryName.value)?.id
-
-    await productsAPI.updateProduct(productCopy)
-    loadingGeneral.value = false
-}
-
-async function updatePrices() {
-    loadingPrices.value = true
-
-    let productCopy = {}
-    Object.assign(productCopy, productGeneral.value)
-    productCopy.prices = {}
+    productCopy.pricing = {}
 
     Object.assign(productCopy.pricing, {
         currencyPrices: {
@@ -192,23 +215,20 @@ async function updatePrices() {
         }
     })
 
-    console.log(productCopy)
-
-    await productsAPI.updateProduct(productCopy)
-    loadingPrices.value = false
-}
-
-async function updateImages() {
-    loadingImages.value = true
-
-    let productCopy = {}
-    Object.assign(productCopy, productGeneral.value)
     productCopy.images = {}
-
     Object.assign(productCopy.images, productImages.value)
 
-    await productsAPI.updateProduct(productCopy)
-    loadingImages.value = false
+    if (!isCreating)
+        await productsAPI.updateProduct(productCopy)
+    else
+        await productsAPI.createProduct(productCopy)
+
+    loading.value = false
+}
+
+async function deleteProduct() {
+    await productsAPI.deleteProduct(route.params.id)
+    router.push(`/admin/products`)
 }
 
 </script>

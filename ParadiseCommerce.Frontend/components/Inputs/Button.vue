@@ -1,5 +1,5 @@
 <template>
-    <button type="submit" class="bg-primary-800 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-900">
+    <button type="submit" :class="[color ?? 'bg-primary-800 hover:bg-primary-900 text-white', 'border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-900']">
         <slot />
 
         <Spinner v-if="loading" class="ml-3" noMargins />
@@ -9,7 +9,8 @@
 <script>
 export default {
     props: {
-        loading: Boolean
+        loading: Boolean,
+        color: String
     }
 }
 </script>

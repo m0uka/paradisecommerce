@@ -38,6 +38,14 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
             return new JsonResult(id.ToString());
         }
         
+        [HttpPost("delete")]
+        // [Authorize(Roles="Admin")]
+        public async Task<IActionResult> Delete([FromBody] string productId)
+        {
+            var id = await _productRepository.Delete(productId);
+            return new JsonResult(id.ToString());
+        }
+        
         [HttpGet("category/{id}")]
         public async Task<IActionResult> GetByCategory(string id)
         {

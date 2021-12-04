@@ -21,5 +21,15 @@ export default {
     async updateProduct(product) {
         const response = await post("products/update", product)
         return response
+    },
+
+    async createProduct(product) {
+        const response = await post("products/create", product)
+        return response
+    },
+
+    async deleteProduct(id) {
+        const response = await post("products/delete", id)
+        return response
     }
 }

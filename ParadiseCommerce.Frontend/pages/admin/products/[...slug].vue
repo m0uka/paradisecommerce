@@ -3,6 +3,11 @@
 
         <Heading>
             <HeadingTitle>Products</HeadingTitle>
+            <HeadingActions>
+                <Button @click="router.push(`/admin/products/create`)">
+                    Create new product
+                </Button>
+            </HeadingActions>
         </Heading>
         
         <Table>
