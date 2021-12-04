@@ -56,6 +56,29 @@
                     </Card>
                 </div>
 
+                <CardDescription name="Pricing" description="The pricing of the product." />
+
+                <div class="mt-5 md:mt-0 md:col-span-2">
+                    <Card>
+                        <CardContent>
+
+                        <div class="grid grid-cols-12 gap-6">
+                            
+                            <div class="col-span-4">
+                                <InputLabel>Price</InputLabel>
+                                <PriceInput v-model="price" v-model:currency="currency" :currencies="[ 'USD', 'CZK' ]" />
+                            </div>
+
+                        </div>
+
+                        </CardContent>
+
+                        <CardFooter>
+                            <Button :loading="loadingPrices" @click="updatePrices">Update</Button>
+                        </CardFooter>
+                    </Card>
+                </div>
+
 
                 <CardDescription name="Images" description="The image presentation of the product." />
 
@@ -108,6 +131,10 @@ let productImages = ref({})
 
 let loadingGeneral = ref(false)
 let loadingImages = ref(false)
+let loadingPrices = ref(false)
+
+let price = ref()
+let currency = ref('USD')
 
 let categoryName = ref('')
 
@@ -119,11 +146,26 @@ const product = computed( () => products?.value?.find(x => x.id === route.params
 
 watch(product, (val) => {
     productGeneral.value = val
-    if (val) productImages.value = val.images ?? {}
+    if (val) {
+        productImages.value = val.images ?? {}
+        chooseCurrency()
+    }
 })
 
 watch(categories, (val) => {
     categoryName.value = val.find(category => category.id == productGeneral.value.groupId)?.name
+})
+
+function chooseCurrency(val) {
+    const pricing = product.value.pricing || {}
+    const firstKey = Object.keys(pricing.currencyPrices)[0]
+
+    currency.value = firstKey
+    price.value = pricing.currencyPrices[firstKey ?? 'CZK']
+}
+
+watch(currency, (val) => {
+    chooseCurrency(val)
 })
 
 async function updateGeneral() {
@@ -135,6 +177,25 @@ async function updateGeneral() {
 
     await productsAPI.updateProduct(productCopy)
     loadingGeneral.value = false
+}
+
+async function updatePrices() {
+    loadingPrices.value = true
+
+    let productCopy = {}
+    Object.assign(productCopy, productGeneral.value)
+    productCopy.prices = {}
+
+    Object.assign(productCopy.pricing, {
+        currencyPrices: {
+            [currency.value]: Number(price.value)
+        }
+    })
+
+    console.log(productCopy)
+
+    await productsAPI.updateProduct(productCopy)
+    loadingPrices.value = false
 }
 
 async function updateImages() {
