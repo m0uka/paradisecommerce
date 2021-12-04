@@ -5,8 +5,8 @@
 
     <header class="relative overflow-hidden">
       <!-- Top navigation -->
-      <nav aria-label="Top" class="relative z-20 bg-white bg-opacity-90 backdrop-filter backdrop-blur-xl">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav aria-label="Top" class="relative z-20 bg-white bg-opacity-90 backdrop-filter backdrop-blur-xl ">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-gray-200">
           <div class="h-16 flex items-center">
             <button type="button" class="bg-white p-2 rounded-md text-gray-400 lg:hidden" @click="menuOpen = true">
               <span class="sr-only">Open menu</span>

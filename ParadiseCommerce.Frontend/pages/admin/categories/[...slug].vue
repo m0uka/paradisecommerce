@@ -11,7 +11,7 @@
         </Heading>
         
         <Table>
-            <TableHeader :items="['ID', 'Name', 'Total Products']" />
+            <TableHeader :items="['Name', 'ID', 'Total Products']" />
             <TableBody>
                 <tr v-for="category in categories" :key="category.id" class="cursor-pointer" v-on:click="selectCategory(category)">
                     <td class="px-6 py-4 whitespace-nowrap text-gray-800 text-lg font-semibold">
