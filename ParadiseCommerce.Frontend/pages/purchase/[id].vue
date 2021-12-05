@@ -74,28 +74,6 @@
                 <h2 id="payment-and-shipping-heading" class="sr-only">Payment and shipping details</h2>
 
                     <div class="max-w-2xl mx-auto px-4 lg:max-w-none lg:px-0">
-                        <div v-if="!authStore?.loggedIn">
-                            <h3
-                                id="contact-info-heading"
-                                class="text-lg font-medium text-gray-900"
-                            >Contact information</h3>
-
-                            <div class="mt-6">
-                                <label
-                                    for="email-address"
-                                    class="block text-sm font-medium text-gray-700"
-                                >Email address</label>
-                                <div class="mt-1">
-                                    <input
-                                        type="email"
-                                        id="email-address"
-                                        name="email-address"
-                                        autocomplete="email"
-                                        class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                                    />
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="mt-10">
                             <h3 class="text-lg font-medium text-gray-900">Payment method</h3>
@@ -243,6 +221,8 @@ import { useProductsStore } from "@/stores/products"
 import { useAuthStore } from '@/stores/auth'
 import { storeToRefs } from 'pinia'
 
+const router = useRouter()
+
 import { CheckCircleIcon, TrashIcon } from '@heroicons/vue/solid'
 import { RadioGroup, RadioGroupDescription, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue'
 
@@ -318,6 +298,11 @@ async function finishPayment() {
         productInfos.push({productId: product.id})
     })
 
+    // if not logged in, redirect to login page
+    if (!authStore.loggedIn) {
+        router.push(`/account/signin?redirect=${route.path}`)
+        return
+    }
 
     const orderPlaceModel = {
         productInfos: productInfos,

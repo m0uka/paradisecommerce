@@ -1,6 +1,6 @@
 <template>
     <RootComponent class="h-screen bg-gray-50">
-        <AuthCard title="Sign in to your account" subtitle="create an account" subtitleLocation="/account/signup">
+        <AuthCard title="Sign in to your account" subtitle="create an account" :subtitleLocation="`/account/signup${$route.query.redirect ? ('?redirect=' + $route.query.redirect) : ''}`">
             <form @submit.prevent="logIn" class="space-y-6" action="#" method="POST">
                 <div>
                     <InputLabel forName="username">
@@ -79,7 +79,7 @@ export default {
             this.loading = false
 
             if (!result.status || result.status == 200)
-                this.$router.push('/')
+                this.$router.push(this.$route.query.redirect ?? '/')
         }
     }
 }

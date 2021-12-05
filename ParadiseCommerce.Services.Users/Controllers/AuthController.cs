@@ -105,7 +105,10 @@ namespace ParadiseCommerce.Services.Users.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok();
+            return Ok(new
+            {
+                email = model.Email
+            });
         }  
     }
 }

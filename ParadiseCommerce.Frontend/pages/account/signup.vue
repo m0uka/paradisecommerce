@@ -85,22 +85,17 @@ export default {
             const result = await authStore.register(this.username, this.password, this.email)
             console.log(result)
             if (result.status != 200) {
-                
-                // Object.values(result.errors).forEach( (error) => {
-                //     if (error[0].toLowerCase().includes('password')) {
-                //         this.passError = error
-                //     }
-                // })
-                
-
+                if (result.errors) {
+                    Object.values(result.errors).forEach( (error) => {
+                        this.passError = error
+                    })
+                }
             }
-
-
 
             this.loading = false
 
             if (result.status == 200)
-                this.$router.push('/')
+                this.$router.push(this.$route.query.redirect ?? '/')
         }
     }
 }
