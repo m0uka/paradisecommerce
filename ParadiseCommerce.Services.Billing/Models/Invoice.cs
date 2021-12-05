@@ -8,11 +8,15 @@ namespace ParadiseCommerce.Services.Billing.Models
 {
     public class Invoice
     {
-        public ObjectId Id { get; set; }
-        public ObjectId CustomerId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+        
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string CustomerId { get; set; }
         public string CustomerEmail { get; set; }
         
-        public ObjectId? OrderId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string OrderId { get; set; }
         
         [BsonRepresentation(BsonType.String)]
         public InvoiceStatus Status { get; set; }

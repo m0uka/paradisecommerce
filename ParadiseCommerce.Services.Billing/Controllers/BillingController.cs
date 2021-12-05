@@ -27,8 +27,15 @@ namespace ParadiseCommerce.Services.Billing.Controllers.Gateways
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var invoices = await _invoiceRepository.GetByUser(ObjectId.Parse(userId));
+            var invoices = await _invoiceRepository.GetByUser(userId);
             return Ok(invoices);
+        }
+        
+        [HttpGet("invoices/order/{id}")]
+        public async Task<ActionResult<IEnumerable<Invoice>>> GetInvoicesByOrder(string id)
+        {
+            var invoice = await _invoiceRepository.GetByOrder(id);
+            return Ok(invoice);
         }
     }
 }

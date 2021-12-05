@@ -57,6 +57,7 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
                 .Set(x => x.Slug, product.Slug)
                 .Set(x => x.IsHidden, product.IsHidden)
                 .Set(x => x.ProductType, product.ProductType)
+                .Set(x => x.ShortDescription, product.ShortDescription)
                 .Set(x => x.UpdatedAt, DateTime.Now);
 
             if (product.Images != null)

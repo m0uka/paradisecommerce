@@ -1,9 +1,14 @@
 <template>
     <RootComponent>
         <Navbar>
+
   <div class="bg-white">
     <div class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+
+      <Breadcrumb :pages="breadcrumbPages" class="-mt-14 mb-12" />
+
       <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
+      
         <!-- Image gallery -->
         <TabGroup v-if="carousel" :defaultIndex="0" as="div" class="flex flex-col-reverse">
           <!-- Image selector -->
@@ -54,7 +59,7 @@
           <form class="mt-6">
         
             <div class="mt-10 flex sm:flex-col1">
-              <button type="submit" class="max-w-xs flex-1 bg-primary-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-primary-500 sm:w-full">Purchase</button>
+              <NuxtLink :to="`/purchase/${product?.slug}`" type="submit" class="max-w-xs flex-1 bg-primary-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-primary-500 sm:w-full">Purchase</NuxtLink>
             </div>
           </form>
 
@@ -62,7 +67,7 @@
             <h2 id="details-heading" class="sr-only">Additional details</h2>
 
             <div class="border-t divide-y divide-gray-200">
-              <!-- <Disclosure as="div" v-for="detail in product.details" :key="detail.name" v-slot="{ open }">
+              <Disclosure as="div" v-for="detail in details" :key="detail.name" v-slot="{ open }">
                 <h3>
                   <DisclosureButton class="group relative w-full py-6 flex justify-between items-center text-left">
                     <span :class="[open ? 'text-primary-600' : 'text-gray-900', 'text-sm font-medium']">
@@ -79,7 +84,7 @@
                     <li v-for="item in detail.items" :key="item">{{ item }}</li>
                   </ul>
                 </DisclosurePanel>
-              </Disclosure> -->
+              </Disclosure>
             </div>
           </section>
         </div>
@@ -112,16 +117,27 @@ import { useProductsStore } from "@/stores/products"
 import { storeToRefs } from 'pinia'
 
 const route = useRoute()
-const router = useRouter()
 
 const productsStore = useProductsStore()
-const { products } = storeToRefs(productsStore)
+const { products, categories } = storeToRefs(productsStore)
 
 const product = computed( () => products?.value?.find(x => x.slug === route.params.id) )
+const category = computed( () => categories?.value?.find(x => x.id === product?.value?.groupId) )
+
 const currency = computed( () => Object.keys(product.value?.pricing?.currencyPrices ?? {})[0] )
 const price = computed( () => product.value?.pricing?.currencyPrices[currency.value] )
 
 const carousel = computed( () => product?.value?.images?.carousel ?? null )
+
+const breadcrumbPages = computed( () => [
+  { name: (category?.value?.name ?? 'Category'), href: (`/category/${category?.value?.slug}`) },
+  { name: (product?.value?.name ?? 'Product'), href: (`#`) }
+])
+
+const details = [
+  { name: 'Payment Methods', items: [ 'We support all major credit card companies, including but not limited to:', 'Visa', 'Mastercard', 'American Express', 'Discover & Diners', 'China UnionPay (CUP)', 'Japan Credit Bureau (JCB)' ] },
+  { name: 'Returns', items: [ 'We offer a two-year warranty for physical products', '14-day withdrawal period for all products or services' ] }
+]
 
 function formatCurrency(value, currency) {
   if (typeof value !== "number") {

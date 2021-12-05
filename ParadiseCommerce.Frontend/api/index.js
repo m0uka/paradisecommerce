@@ -3,7 +3,16 @@ import { useAuthStore } from '@/stores/auth'
 const API_URL = 'https://localhost:4000/api/'
 
 export function get(url) {
-    return fetch(API_URL + url)
+    const authStore = useAuthStore()
+    
+    return fetch(API_URL + url, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + authStore.jwt
+        },
+    })
 }
 
 export function post(url, data) {

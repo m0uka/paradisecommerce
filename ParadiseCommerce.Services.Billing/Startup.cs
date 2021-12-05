@@ -38,16 +38,16 @@ namespace ParadiseCommerce.Services.Billing
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            
+
             services.AddSingleton<IMongoClient, MongoClient>(sp =>
                 new MongoClient(Configuration.GetConnectionString("MongoDb")));
-            
+
             // Mass Transit
             services.AddMassTransitHostedService();
-            
+
             // Payment gateways
             services.AddTransient<IStripePaymentService, StripePaymentService>();
-            
+
             // Services
             services.AddTransient<IInvoiceRepository, InvoiceRepository>();
             services.AddTransient<IBillService, BillService>();
@@ -57,37 +57,36 @@ namespace ParadiseCommerce.Services.Billing
             {
                 x.UsingRabbitMq((context, cfg) =>
                 {
-                    cfg.Host(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true" ? "" : "");
-          
-                    cfg.ReceiveEndpoint("billing-service", e =>
-                    {
-                        e.Consumer<BillConsumer>(context);
-                    });
+                    cfg.Host(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true"
+                        ? "host.docker.internal"
+                        : "localhost");
+
+                    cfg.ReceiveEndpoint("billing-service", e => { e.Consumer<BillConsumer>(context); });
                 });
             });
-            
+
             // Adding Authentication
             services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
 
-            // Adding Jwt Bearer  
-            .AddJwtBearer(options =>  
-            {  
-                options.SaveToken = true;
-                options.RequireHttpsMetadata = false;  
-                options.TokenValidationParameters = new TokenValidationParameters()  
-                {  
-                    ValidateIssuer = true,
-                    ValidateAudience = false,  
-                    ValidAudience = Configuration["JWT:ValidAudience"],  
-                    ValidIssuer = Configuration["JWT:ValidIssuer"],  
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))  
-                };  
-            });
+                // Adding Jwt Bearer  
+                .AddJwtBearer(options =>
+                {
+                    options.SaveToken = true;
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = false,
+                        ValidAudience = Configuration["JWT:ValidAudience"],
+                        ValidIssuer = Configuration["JWT:ValidIssuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+                    };
+                });
 
             services.AddSwaggerGen(c =>
             {

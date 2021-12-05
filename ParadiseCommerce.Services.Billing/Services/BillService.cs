@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MassTransit;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using ParadiseCommerce.Services.Billing.Models;
@@ -17,13 +18,15 @@ namespace ParadiseCommerce.Services.Billing.Services
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly ILogger<BillService> _logger;
+        private readonly IConfiguration _configuration;
 
-        public BillService(IStripePaymentService stripePaymentService, IPublishEndpoint publishEndpoint, IInvoiceRepository invoiceRepository, ILogger<BillService> logger)
+        public BillService(IStripePaymentService stripePaymentService, IPublishEndpoint publishEndpoint, IInvoiceRepository invoiceRepository, ILogger<BillService> logger, IConfiguration configuration)
         {
             _stripePaymentService = stripePaymentService;
             _publishEndpoint = publishEndpoint;
             _invoiceRepository = invoiceRepository;
             _logger = logger;
+            _configuration = configuration;
         }
 
         private decimal CalculateTotal(List<BillItem> items)
@@ -37,8 +40,8 @@ namespace ParadiseCommerce.Services.Billing.Services
             
             var invoice = new Invoice
             {
-                CustomerId = ObjectId.Parse(command.CustomerInfo.CustomerId),
-                OrderId = command.OrderId != null ? ObjectId.Parse(command.OrderId) : null,
+                CustomerId = command.CustomerInfo.CustomerId,
+                OrderId = command.OrderId,
                 CustomerEmail = command.CustomerInfo.CustomerEmail,
                 
                 Total = totalCost,
@@ -62,12 +65,16 @@ namespace ParadiseCommerce.Services.Billing.Services
 
         public async Task<PaymentSchema> CreateInvoicePaymentSchema(Invoice invoice)
         {
+            string baseUrl = _configuration["AppInfo:BaseUrl"];
+            string successUrl = baseUrl + $"order/{invoice.OrderId}?result=success";
+            string failUrl = baseUrl + $"order/{invoice.OrderId}?result=fail";
+            
             PaymentSchema paymentSchema = null;
             switch (invoice.PaymentMethod)
             {
                 case "stripe":
                     paymentSchema = await _stripePaymentService.CreatePaymentLink(invoice,
-                        "https://google.com?q=success", "https://google.com?q=fail");
+                        successUrl, failUrl);
                     break;
                 
                 default:

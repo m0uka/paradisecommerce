@@ -121,7 +121,7 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
                 {
                     Id = orderItem.ProductId,
                     Name = product.Name,
-                    Description = product.Description,
+                    Description = product.ShortDescription,
                     UnitAmount = product.Pricing.CurrencyPrices[usedCurrency],
                     Quantity = orderItem.Quantity
                 };
@@ -130,7 +130,7 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
             }
             
             await billingEndpoint.Send(billCommand);
-            return Ok();
+            return Ok(order.Id);
         }
     }
 }

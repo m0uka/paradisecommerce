@@ -49,6 +49,12 @@
                             </div>
 
                             <div class="col-span-4 sm:col-span-2">
+                                <InputLabel>Short description</InputLabel>
+                                <InputDescription>A short optional description for your product</InputDescription>
+                                <TextInput v-model="productGeneral.shortDescription" placeholder="Something short about this product." />
+                            </div>
+
+                            <div class="col-span-4 sm:col-span-2">
                                 <InputLabel>Slug</InputLabel>
                                 <InputDescription>SEO-friendly URL slug</InputDescription>
                                 <TextInput v-model="productGeneral.slug" placeholder="my-cool-tshirt" />

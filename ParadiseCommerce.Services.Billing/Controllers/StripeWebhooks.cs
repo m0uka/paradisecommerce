@@ -58,7 +58,7 @@ namespace ParadiseCommerce.Services.Billing.Controllers.Gateways
                             return BadRequest();
                         }
 
-                        var invoice = await _invoiceRepository.Get(ObjectId.Parse(invoiceId));
+                        var invoice = await _invoiceRepository.Get(invoiceId);
                         if (invoice == null)
                         {
                             _logger.LogError($"Could not find invoice with id {invoiceId}!");

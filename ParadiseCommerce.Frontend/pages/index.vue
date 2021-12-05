@@ -7,7 +7,7 @@
         <main>
             <FrontCategories />
             <!-- <FrontFeatured /> -->
-            <FrontFavorite />
+            <!-- <FrontFavorite /> -->
         </main>
 
         <Footer />
