@@ -62,7 +62,7 @@
 
                             <div class="col-span-4 sm:col-span-2">
                                 <InputLabel>Type</InputLabel>
-                                <Dropdown :data="[ { id: 1, name: 'Physical'}, { id: 2, name: 'Digital' }, { id: 3, name: 'Service' } ]" v-model="productGeneral.productType" />
+                                <Dropdown :data="[ { id: 1, name: 'Physical'}, { id: 2, name: 'Digital' }, { id: 3, name: 'Service' } ]" :modelValue="productGeneral.productType ?? 'Physical'" v-model="productGeneral.productType" />
                             </div>
 
                             <div class="col-span-4 sm:col-span-2">
@@ -207,19 +207,35 @@ const { products, categories } = storeToRefs(productsStore)
 // maybe having all products in the store is not a good idea? fetch products from the backend maybe??
 const product = computed( () => products?.value?.find(x => x.id === route.params.id) )
 
-// tady muze byt race condition, lol
+let oneDone = false
+
 watch(product, (val) => {
     if (val) {
         productGeneral.value = val
         productImages.value = val.images ?? {}
         carousel.value = val.images?.carousel ?? [ '' ]
         chooseCurrency()
+
+        if (oneDone) {
+            setCategoryValue()
+        }
+
+        oneDone = true
     }
 })
 
 watch(categories, (val) => {
-    categoryName.value = val.find(category => category.id == productGeneral.value.groupId)?.name
+    if (oneDone) {
+        setCategoryValue()
+    }
+
+    oneDone = true
 })
+
+function setCategoryValue() {
+    categoryName.value = categories.value?.find(category => category.id == productGeneral.value.groupId)?.name ?? categories.value?.name
+}
+
 
 function chooseCurrency(val) {
     if (product.value) {

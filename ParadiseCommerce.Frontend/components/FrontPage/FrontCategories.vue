@@ -115,7 +115,7 @@ const { frontPage } = storeToRefs(storefront)
 const { categories } = storeToRefs(productsStore)
 
 const firstFeatured = computed( () => categories.value?.find(x => x.name == frontPage?.value?.featuredCategories?.[0]) )
-const secondFeatured = computed( () => categories.value?.find(x => x.name == frontPage?.value?.featuredCategories?.[0]) )
-const thirdFeatured = computed( () => categories.value?.find(x => x.name == frontPage?.value?.featuredCategories?.[0]) )
+const secondFeatured = computed( () => categories.value?.find(x => x.name == frontPage?.value?.featuredCategories?.[1]) )
+const thirdFeatured = computed( () => categories.value?.find(x => x.name == frontPage?.value?.featuredCategories?.[2]) )
 
 </script>
