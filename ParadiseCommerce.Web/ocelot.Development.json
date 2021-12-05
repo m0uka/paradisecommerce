@@ -11,11 +11,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/order/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "ParadiseCommerce.JWT",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
     },
 
     {
@@ -97,7 +93,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/store/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
     }
   ]
 }

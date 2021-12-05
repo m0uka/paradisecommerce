@@ -33,6 +33,17 @@ namespace ParadiseCommerce.Services.Ordering.Controllers
             _orderRepository = orderRepository;
             _productRepository = productRepository;
         }
+        
+        [HttpGet("get/{id}")]
+        public async Task<ActionResult<Order>> GetOrder(string id)
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var order = await _orderRepository.Get(id);
+
+            if (order.UserId != userId) return Unauthorized();
+            
+            return Ok(order);
+        }
 
         [HttpGet("orders")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()

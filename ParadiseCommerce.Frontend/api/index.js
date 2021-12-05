@@ -2,9 +2,9 @@ import { useAuthStore } from '@/stores/auth'
 
 const API_URL = 'https://localhost:4000/api/'
 
-export function get(url) {
+export async function get(url) {
     const authStore = useAuthStore()
-    
+
     return fetch(API_URL + url, {
         method: 'GET',
         mode: 'cors',

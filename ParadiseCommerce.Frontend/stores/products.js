@@ -18,7 +18,6 @@ export const useProductsStore = defineStore('products', {
     actions: {
         async fetch() {
             const data = await products.fetchData()
-            console.log(data)
             
             this.loaded = true
             this.products = data
@@ -26,7 +25,6 @@ export const useProductsStore = defineStore('products', {
 
         async fetchCategories() {
             const data = await products.fetchCategories()
-            console.log(data)
             
             this.categoriesLoaded = true
             this.categories = data

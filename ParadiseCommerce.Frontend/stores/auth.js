@@ -73,10 +73,10 @@ export const useAuthStore = defineStore('auth', {
 
         loadUser() {
             const token = localStorage.getItem('token')
-            console.log(token)
             if (token) {
                 this.checkJWT(JSON.parse(token))
             }
+            this.loaded = true
         }
     }
 })

@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white">
     <!-- Mobile menu -->
-    <MobileNavbar :open="menuOpen" :navigation="navigation" />
+    <!-- <MobileNavbar :open="menuOpen" :navigation="navigation" /> -->
 
     <header class="relative overflow-hidden">
       <!-- Top navigation -->

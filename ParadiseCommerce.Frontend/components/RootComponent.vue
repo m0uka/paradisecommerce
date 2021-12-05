@@ -10,13 +10,13 @@ import { useAuthStore } from "@/stores/auth"
 import { useProductsStore } from "@/stores/products"
 
 export default {
-    created() {
+    async created() {
         const storefrontStore = useStorefrontStore()
         const authStore = useAuthStore()
         const productsStore = useProductsStore()
 
+        await authStore.loadUser()
         storefrontStore.fetch()
-        authStore.loadUser()
 
         productsStore.fetchCategories()
         productsStore.fetch()
