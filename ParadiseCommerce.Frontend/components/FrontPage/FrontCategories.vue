@@ -7,13 +7,13 @@
                     id="category-heading"
                     class="text-2xl font-extrabold tracking-tight text-gray-900"
                 >Shop by Category</h2>
-                <a
+                <!-- <a
                     href="#"
                     class="hidden text-sm font-semibold text-primary-600 hover:text-primary-500 sm:block"
                 >
                     Browse all categories
                     <span aria-hidden="true">&rarr;</span>
-                </a>
+                </a> -->
             </div>
 
             <div
@@ -23,8 +23,7 @@
                     class="group aspect-w-2 aspect-h-1 rounded-lg overflow-hidden sm:aspect-h-1 sm:aspect-w-1 sm:row-span-2"
                 >
                     <img
-                        src="https://tailwindui.com/img/ecommerce-images/home-page-03-featured-category.jpg"
-                        alt="Two models wearing women's black cotton crewneck tee and off-white cotton crewneck tee."
+                        :src="firstFeatured?.bigspotImage"
                         class="object-center object-cover group-hover:opacity-75"
                     />
                     <div
@@ -34,10 +33,10 @@
                     <div class="p-6 flex items-end">
                         <div>
                             <h3 class="font-semibold text-white">
-                                <a href="#">
+                                <NuxtLink :to="`/category/${firstFeatured?.slug}`">
                                     <span class="absolute inset-0" />
-                                    New Arrivals
-                                </a>
+                                    {{ firstFeatured?.name }}
+                                </NuxtLink>
                             </h3>
                             <p aria-hidden="true" class="mt-1 text-sm text-white">Shop now</p>
                         </div>
@@ -47,8 +46,7 @@
                     class="group aspect-w-2 aspect-h-1 rounded-lg overflow-hidden sm:relative sm:aspect-none sm:h-full"
                 >
                     <img
-                        src="https://tailwindui.com/img/ecommerce-images/home-page-03-category-01.jpg"
-                        alt="Wooden shelf with gray and olive drab green baseball caps, next to wooden clothes hanger with sweaters."
+                        :src="secondFeatured?.bigspotImage"
                         class="object-center object-cover group-hover:opacity-75 sm:absolute sm:inset-0 sm:w-full sm:h-full"
                     />
                     <div
@@ -58,10 +56,10 @@
                     <div class="p-6 flex items-end sm:absolute sm:inset-0">
                         <div>
                             <h3 class="font-semibold text-white">
-                                <a href="#">
+                                <NuxtLink :to="`/category/${firstFeatured?.slug}`">
                                     <span class="absolute inset-0" />
-                                    Accessories
-                                </a>
+                                    {{ secondFeatured?.name }}
+                                </NuxtLink>
                             </h3>
                             <p aria-hidden="true" class="mt-1 text-sm text-white">Shop now</p>
                         </div>
@@ -71,8 +69,7 @@
                     class="group aspect-w-2 aspect-h-1 rounded-lg overflow-hidden sm:relative sm:aspect-none sm:h-full"
                 >
                     <img
-                        src="https://tailwindui.com/img/ecommerce-images/home-page-03-category-02.jpg"
-                        alt="Walnut desk organizer set with white modular trays, next to porcelain mug on wooden desk."
+                        :src="thirdFeatured?.bigspotImage"
                         class="object-center object-cover group-hover:opacity-75 sm:absolute sm:inset-0 sm:w-full sm:h-full"
                     />
                     <div
@@ -82,10 +79,10 @@
                     <div class="p-6 flex items-end sm:absolute sm:inset-0">
                         <div>
                             <h3 class="font-semibold text-white">
-                                <a href="#">
+                                <NuxtLink :to="`/category/${thirdFeatured?.slug}`">
                                     <span class="absolute inset-0" />
-                                    Workspace
-                                </a>
+                                    {{ thirdFeatured?.name }}
+                                </NuxtLink>
                             </h3>
                             <p aria-hidden="true" class="mt-1 text-sm text-white">Shop now</p>
                         </div>
@@ -93,7 +90,7 @@
                 </div>
             </div>
 
-            <div class="mt-6 sm:hidden">
+            <!-- <div class="mt-6 sm:hidden">
                 <a
                     href="#"
                     class="block text-sm font-semibold text-primary-600 hover:text-primary-500"
@@ -101,7 +98,24 @@
                     Browse all categories
                     <span aria-hidden="true">&rarr;</span>
                 </a>
-            </div>
+            </div> -->
         </div>
     </section>
 </template>
+
+<script setup>
+import { useProductsStore } from "@/stores/products"
+import { useStorefrontStore } from '@/stores/storefront'
+import { storeToRefs } from 'pinia'
+
+const storefront = useStorefrontStore()
+const productsStore = useProductsStore()
+
+const { frontPage } = storeToRefs(storefront)
+const { categories } = storeToRefs(productsStore)
+
+const firstFeatured = computed( () => categories.value?.find(x => x.name == frontPage?.value?.featuredCategories?.[0]) )
+const secondFeatured = computed( () => categories.value?.find(x => x.name == frontPage?.value?.featuredCategories?.[0]) )
+const thirdFeatured = computed( () => categories.value?.find(x => x.name == frontPage?.value?.featuredCategories?.[0]) )
+
+</script>

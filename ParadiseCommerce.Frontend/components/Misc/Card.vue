@@ -1,5 +1,5 @@
 <template>
-    <div class="shadow sm:rounded-md sm:overflow-hidden">
+    <div class="shadow sm:rounded-md">
         <slot />
     </div>
 </template>

@@ -44,6 +44,7 @@ namespace ParadiseCommerce.Services.Storefront.Repositories
             if (storefront.FrontPage != null)
             {
                 update = update.Set(x => x.FrontPage, storefront.FrontPage);
+                // update = update.Set(x => x.FrontPage.FeaturedCategories, storefront.FrontPage.FeaturedCategories);
             }
 
             await _frontPages.FindOneAndUpdateAsync(x => true, update);

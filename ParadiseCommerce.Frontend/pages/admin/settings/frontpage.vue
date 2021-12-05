@@ -27,11 +27,43 @@
                 </div>
 
             </CardContent>
-
-            <CardFooter>
-                <Button :loading="storeLoading" @click="save">Save</Button>
-            </CardFooter>
         </Card>
+
+        <Card>
+            <CardContent title="Featured Categories" subtitle="Front page featured categories.">
+
+                <div class="mt-6 grid grid-cols-3 gap-6">
+                    
+                    <div class="col-span-3 md:col-span-1">
+                        <InputLabel>First</InputLabel>
+                        <InputDescription>The first featured category</InputDescription>
+                        <Dropdown v-if="frontPage" :data="categories" v-model="featuredCategories[0]" />
+                    </div> 
+                    
+                    <div class="col-span-3 md:col-span-1">
+                        <InputLabel>Second</InputLabel>
+                        <InputDescription>The second featured category</InputDescription>
+                        <Dropdown v-if="frontPage" :data="categories" v-model="featuredCategories[1]" />
+                    </div>
+
+                    <div class="col-span-3 md:col-span-1">
+                        <InputLabel>Third</InputLabel>
+                        <InputDescription>The third featured category</InputDescription>
+                        <Dropdown v-if="frontPage" :data="categories" v-model="featuredCategories[2]" />
+                    </div>
+                    
+                </div>
+
+            </CardContent>
+        </Card>
+
+        <div class="mt-5 md:mt-0 md:col-span-2">
+            <Card>
+                <CardFooter>
+                    <Button :loading="storeLoading" @click="save">Save</Button>
+                </CardFooter>
+            </Card>
+        </div>
 
 
     </SettingsLayout>
@@ -40,6 +72,8 @@
 <script>
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
+
+import { useProductsStore } from "@/stores/products"
 import { useStorefrontStore } from '@/stores/storefront'
 
 import storefront from '@/api/storefront'
@@ -47,12 +81,26 @@ import storefront from '@/api/storefront'
 export default {
     setup() {
         const storefront = useStorefrontStore()
+        const productsStore = useProductsStore()
+
         const { frontPage } = storeToRefs(storefront)
+        const { categories } = storeToRefs(productsStore)
+
+        const featuredCategories = ref([ '', '', '' ])
+
         const storeLoading = ref(false)
 
         return {
             frontPage,
+            categories,
+            featuredCategories,
             storeLoading
+        }
+    },
+
+    watch: {
+        frontPage: function (val) {
+            this.featuredCategories = val.featuredCategories
         }
     },
 
@@ -60,8 +108,13 @@ export default {
         async save() {
             this.storeLoading = true
 
+            const frontPage = this.frontPage
+            frontPage.featuredCategories = this.featuredCategories
+
+            console.log(frontPage.featuredCategories)
+
             await storefront.updateStore({
-                frontPage: this.frontPage
+                frontPage: frontPage
             })
 
             this.storeLoading = false
