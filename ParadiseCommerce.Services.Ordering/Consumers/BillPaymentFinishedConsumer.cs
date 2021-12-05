@@ -32,7 +32,7 @@ namespace ParadiseCommerce.Services.Ordering.Consumers
                 _logger.LogWarning($"Received a bill payment, but it has an invalid OrderId! Ignoring!");
                 return;
             }
-
+            
             order.Status = OrderStatus.Active;
             order.PaymentMethod = context.Message.PaymentMethod;
             order.ActivatedAt = context.Message.PaidAt;

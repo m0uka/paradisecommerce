@@ -323,7 +323,7 @@ async function finishPayment() {
         productInfos: productInfos,
         currency: currency.value,
         paymentMethod: selectedPaymentMethod.value.id,
-        shippingAddress: shippingAddress
+        shippingAddress: shippingAddress.value
     }
 
     const response = await orderAPI.placeOrder(orderPlaceModel)

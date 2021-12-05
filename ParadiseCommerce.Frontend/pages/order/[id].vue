@@ -58,9 +58,9 @@
                   <div>
                     <dt class="font-medium text-gray-900">Delivery address</dt>
                     <dd class="mt-3 text-gray-500">
-                      <span class="block">{{ product?.shippingAddress?.streetAddress }}</span>
-                      <span class="block">{{ product?.shippingAddress?.state }}</span>
-                      <span class="block">{{ product?.shippingAddress?.zipCode }}</span>
+                      <span class="block">{{ order?.shippingAddress?.streetAddress }}</span>
+                      <span class="block">{{ order?.shippingAddress?.country }}</span>
+                      <span class="block">{{ order?.shippingAddress?.zipCode }} {{ order?.shippingAddress?.state }}</span>
                     </dd>
                   </div>
                   
