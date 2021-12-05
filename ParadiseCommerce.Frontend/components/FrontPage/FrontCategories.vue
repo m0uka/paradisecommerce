@@ -56,7 +56,7 @@
                     <div class="p-6 flex items-end sm:absolute sm:inset-0">
                         <div>
                             <h3 class="font-semibold text-white">
-                                <NuxtLink :to="`/category/${firstFeatured?.slug}`">
+                                <NuxtLink :to="`/category/${secondFeatured?.slug}`">
                                     <span class="absolute inset-0" />
                                     {{ secondFeatured?.name }}
                                 </NuxtLink>
