@@ -145,6 +145,10 @@ const order = computed( () => ordersStore?.orders?.find(x => x.id == route.param
 const products = computed( () => getOrderProducts(order.value) )
 
 ordersStore.fetch()
+
+// fetch orderData every 2s
+setInterval( ordersStore.fetch, 2000 )
+
 authStore.$subscribe( async (mutation, state) => {
   if (mutation.events.key == 'loaded') {
     await ordersStore.fetch()

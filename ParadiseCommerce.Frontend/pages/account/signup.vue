@@ -83,7 +83,6 @@ export default {
             this.error = null
 
             const result = await authStore.register(this.username, this.password, this.email)
-            console.log(result)
             if (result.status != 200) {
                 if (result.errors) {
                     Object.values(result.errors).forEach( (error) => {
