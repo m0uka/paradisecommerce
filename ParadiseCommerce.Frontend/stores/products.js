@@ -9,6 +9,12 @@ export const useProductsStore = defineStore('products', {
         categories: []
     }),
 
+    getters: {
+        navbarCategories: (state) => {
+            return state.categories.filter(x => x.showInNavbar)
+        }
+    },
+
     actions: {
         async fetch() {
             const data = await products.fetchData()

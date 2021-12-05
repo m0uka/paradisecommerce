@@ -44,9 +44,19 @@
                             </div>
 
                             <div class="col-span-4 sm:col-span-2">
+                                <InputLabel>Slug</InputLabel>
+                                <InputDescription>A SEO-friendly URL slug</InputDescription>
+                                <TextInput v-model="categoryGeneral.slug" />
+                            </div>
+
+                            <div class="col-span-4 sm:col-span-2">
                                 <InputLabel>Description</InputLabel>
                                 <InputDescription>A short description of this category</InputDescription>
                                 <TextInput v-model="categoryGeneral.description" />
+                            </div>
+
+                            <div class="col-span-4 sm:col-span-2">
+                                <ToggleInput v-model="categoryGeneral.showInNavbar" title="Show in navbar" description="Should the category be displayed in the top navbar?" />
                             </div>
 
                         </div>

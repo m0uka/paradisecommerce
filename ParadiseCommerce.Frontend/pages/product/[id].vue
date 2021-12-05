@@ -5,11 +5,11 @@
     <div class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
       <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
         <!-- Image gallery -->
-        <TabGroup as="div" class="flex flex-col-reverse">
+        <TabGroup v-if="carousel" :defaultIndex="0" as="div" class="flex flex-col-reverse">
           <!-- Image selector -->
           <div class="hidden mt-6 w-full max-w-2xl mx-auto sm:block lg:max-w-none">
             <TabList class="grid grid-cols-4 gap-6">
-              <Tab v-for="image in product?.images?.carousel" :key="image.id" class="relative h-24 bg-white rounded-md flex items-center justify-center text-sm font-medium uppercase text-gray-900 cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring focus:ring-offset-4 focus:ring-opacity-50" v-slot="{ selected }">
+              <Tab v-for="image in carousel" :key="image" class="relative h-24 bg-white rounded-md flex items-center justify-center text-sm font-medium uppercase text-gray-900 cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring focus:ring-offset-4 focus:ring-opacity-50" v-slot="{ selected }">
                 <span class="absolute inset-0 rounded-md overflow-hidden">
                   <img :src="image" alt="" class="w-full h-full object-center object-cover" />
                 </span>
@@ -19,7 +19,7 @@
           </div>
 
           <TabPanels class="w-full aspect-w-1 aspect-h-1">
-            <TabPanel v-for="image in product?.images?.carousel" :key="image.id">
+            <TabPanel v-for="image in carousel" :key="image">
               <img :src="image" class="w-full h-full object-center object-cover sm:rounded-lg" />
             </TabPanel>
           </TabPanels>
@@ -94,6 +94,7 @@
 
 
 <script setup>
+import { ref } from 'vue'
 import {
   Disclosure,
   DisclosureButton,
@@ -119,5 +120,9 @@ const { products } = storeToRefs(productsStore)
 const product = computed( () => products?.value?.find(x => x.slug === route.params.id) )
 const currency = computed( () => Object.keys(product.value?.pricing?.currencyPrices ?? {})[0] )
 const price = computed( () => product.value?.pricing?.currencyPrices[currency.value] )
+
+const carousel = computed( () => product?.value?.images?.carousel ?? null )
+
+
 
 </script>

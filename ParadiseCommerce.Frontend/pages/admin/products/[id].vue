@@ -124,6 +124,30 @@
                 </div>
 
 
+                <CardDescription name="Image Carousel" description="The images present in the carousel. Leave the input empty to not display the image." />
+
+                <div class="mt-5 md:mt-0 md:col-span-2">
+                    <Card>
+                        <CardContent>
+
+                        <div class="grid grid-cols-2 gap-6">
+                            
+                            <div v-for="(entry, index) in carousel" class="col-span-4 sm:col-span-2">
+                                <InputLabel>Image #{{ index + 1 }}</InputLabel>
+                                <TextInput v-model="carousel[index]" @update:modelValue="carouselChange(index, $event)" placeholder="None" />
+                            </div>
+
+                        </div>
+
+                        </CardContent>
+
+                        <CardFooter>
+                            <Button @click="addCarousel()">Add image</Button>
+                        </CardFooter>
+                    </Card>
+                </div>
+
+
                 <CardDescription name="Finish" description="Finish setting up the product here." />
 
                 <div class="mt-5 md:mt-0 md:col-span-2">
@@ -169,8 +193,12 @@ let currency = ref('USD')
 
 let categoryName = ref('')
 
+let carousel = ref([])
+
 const productsStore = useProductsStore()
 const { products, categories } = storeToRefs(productsStore)
+
+// maybe having all products in the store is not a good idea? fetch products from the backend maybe??
 const product = computed( () => products?.value?.find(x => x.id === route.params.id) )
 
 // tady muze byt race condition, lol
@@ -178,6 +206,7 @@ watch(product, (val) => {
     if (val) {
         productGeneral.value = val
         productImages.value = val.images ?? {}
+        carousel.value = val.images?.carousel ?? [ '' ]
         chooseCurrency()
     }
 })
@@ -200,6 +229,16 @@ watch(currency, (val) => {
     chooseCurrency(val)
 })
 
+function carouselChange(index, val) {
+    if (val == '') {
+        carousel.value.splice(index)
+    }
+}
+
+function addCarousel() {
+    carousel.value[carousel.value.length] = ''
+}
+
 async function update() {
     loading.value = true
 
@@ -217,6 +256,7 @@ async function update() {
 
     productCopy.images = {}
     Object.assign(productCopy.images, productImages.value)
+    productCopy.images.carousel = carousel.value
 
     if (!isCreating)
         await productsAPI.updateProduct(productCopy)

@@ -43,6 +43,8 @@ namespace ParadiseCommerce.Services.Ordering.Repositories
             var update = Builders<ProductCategory>.Update
                 .Set(x => x.Name, category.Name)
                 .Set(x => x.Description, category.Description)
+                .Set(x => x.ShowInNavbar, category.ShowInNavbar)
+                .Set(x => x.Slug, category.Slug)
                 .Set(x => x.BigspotImage, category.BigspotImage);
 
             var result = await _categories.UpdateOneAsync(filter, update);
