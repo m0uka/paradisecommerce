@@ -31,7 +31,7 @@
 
           <div class="mt-3">
             <h2 class="sr-only">Product information</h2>
-            <p class="text-3xl text-gray-900">{{ price }} {{ currency }}</p>
+            <p class="text-3xl text-gray-900">{{ formatCurrency(price, currency) }}</p>
           </div>
 
           <!-- Reviews -->
@@ -48,13 +48,13 @@
           <div class="mt-6">
             <h3 class="sr-only">Description</h3>
 
-            <div class="text-base text-gray-700 space-y-6" v-html="product?.description" />
+            <div class="prose text-base text-gray-700 space-y-6" v-html="product?.description" />
           </div>
 
           <form class="mt-6">
         
             <div class="mt-10 flex sm:flex-col1">
-              <button type="submit" class="max-w-xs flex-1 bg-primary-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-primary-500 sm:w-full">Add to bag</button>
+              <button type="submit" class="max-w-xs flex-1 bg-primary-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-primary-500 sm:w-full">Purchase</button>
             </div>
           </form>
 
@@ -123,6 +123,17 @@ const price = computed( () => product.value?.pricing?.currencyPrices[currency.va
 
 const carousel = computed( () => product?.value?.images?.carousel ?? null )
 
+function formatCurrency(value, currency) {
+  if (typeof value !== "number") {
+    return value;
+  }
 
+  var formatter = new Intl.NumberFormat(navigator.language, {
+    style: 'currency',
+    currency: currency
+  })
+
+  return formatter.format(value)
+}
 
 </script>
