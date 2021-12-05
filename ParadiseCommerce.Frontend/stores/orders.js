@@ -11,6 +11,8 @@ export const useOrdersStore = defineStore('orders', {
         async fetch() {
             const response = await orders.fetch()
             const data = await response.json()
+
+            console.log(data)
             
             this.loaded = true
             this.orders = data

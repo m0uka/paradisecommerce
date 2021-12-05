@@ -15,9 +15,9 @@
 
             <!-- Logo -->
             <div class="ml-4 flex lg:ml-0">
-              <a href="/">
+              <NuxtLink to="/">
                 <img class="h-8 w-auto" :src="storefront.logo" alt="" />
-              </a>
+              </NuxtLink>
             </div>
 
             <div class="hidden lg:ml-8 lg:block lg:self-stretch">
@@ -96,7 +96,7 @@
                 </NuxtLink>
               </div>
               <div v-else>
-                <NuxtLink class="text-gray-700 font-medium" to="/account/info">
+                <NuxtLink class="text-gray-700 font-medium" to="/order/list">
                   {{ auth.name }}
                 </NuxtLink>
               </div>
