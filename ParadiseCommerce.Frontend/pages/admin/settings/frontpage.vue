@@ -23,6 +23,22 @@
                         <InputDescription>The URL of the large image on the front page</InputDescription>
                         <TextInput v-model="frontPage.imageUrl" />
                     </div>
+
+                    <div class="col-span-4">
+                        
+                    </div>
+                    
+                    <div class="col-span-4 sm:col-span-2">
+                        <InputLabel>CTA button text</InputLabel>
+                        <InputDescription>The text of the large Call-to-Action button</InputDescription>
+                        <TextInput v-model="frontPage.mainButtonText" />
+                    </div>
+
+                    <div class="col-span-4 sm:col-span-2">
+                        <InputLabel>CTA button location</InputLabel>
+                        <InputDescription>The redirect location of the large Call-to-Action button</InputDescription>
+                        <TextInput v-model="frontPage.mainButtonLocation" />
+                    </div>
                     
                 </div>
 

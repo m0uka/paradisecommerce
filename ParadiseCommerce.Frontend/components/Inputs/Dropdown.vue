@@ -54,13 +54,13 @@ export default {
     },
     watch: {
         modelValue: function (val) {
-            this.internalValue = val
+          this.internalValue = val
         }
     },
     data() {
         return {
-            internalValue: null
+            internalValue: this.modelValue
         }
-    }
+    },
 }
 </script>
