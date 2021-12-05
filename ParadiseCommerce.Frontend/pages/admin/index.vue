@@ -1,5 +1,7 @@
 <template>
     <AdminLayout>
-        <p>HI</p>
+        <Heading>
+            <HeadingTitle>Soon™</HeadingTitle>
+        </Heading>
     </AdminLayout>
 </template>
