@@ -150,13 +150,13 @@ ordersStore.fetch()
 setInterval( ordersStore.fetch, 2000 )
 
 authStore.$subscribe( async (mutation, state) => {
-  if (mutation?.events?.key == 'loaded') {
+  if (mutation?.storeId == 'auth') {
     await ordersStore.fetch()
   }
 })
 
 ordersStore.$subscribe( async (mutation, state) => {
-  if (mutation?.events?.key == 'orders') {
+  if (mutation?.storeId == 'orders') {
     loading.value = false
 
     const response = await billingAPI.getByOrder(order.value.id)
