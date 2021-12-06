@@ -43,10 +43,8 @@ yarn dev
 
 Deploying the frontend will matter on your preferences and hosting environment, but you should use
 ```bash
-yarn generate
+yarn build
 ```
-to generate the static files, or
-```bash
-yarn start
-```
-to launch a production environment.
+to build a production environment.
+
+NOTE: This actually doesn't work yet, pending https://github.com/nuxt/framework/issues/886
