@@ -1,4 +1,5 @@
 import { useAuthStore } from '@/stores/auth'
+import { useRuntimeConfig } from '#app'
 
 export async function get(url) {
     const authStore = useAuthStore()

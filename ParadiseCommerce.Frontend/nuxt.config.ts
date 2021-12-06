@@ -33,5 +33,6 @@ export default defineNuxtConfig({
         ['@pinia/nuxt', { disableVuex: true }]
     ],
 
-    ssr: false
+    ssr: false,
+    // target: 'static',
 })
