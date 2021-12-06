@@ -148,7 +148,7 @@ const sortedOrders = computed( () => orders?.value?.sort( (a, b) => new Date(b.c
 
 ordersStore.fetch()
 authStore.$subscribe( async (mutation, state) => {
-  if (mutation.events.key == 'loaded') {
+  if (mutation?.events?.key == 'loaded') {
     await ordersStore.fetch()
   }
 })
