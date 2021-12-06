@@ -1,11 +1,10 @@
 import { useAuthStore } from '@/stores/auth'
 
-const API_URL = 'https://localhost:4000/api/'
-
 export async function get(url) {
     const authStore = useAuthStore()
+    const config = useRuntimeConfig()
 
-    return fetch(API_URL + url, {
+    return fetch(config.baseUrl + url, {
         method: 'GET',
         mode: 'cors',
         headers: {
@@ -17,8 +16,9 @@ export async function get(url) {
 
 export function post(url, data) {
     const authStore = useAuthStore()
+    const config = useRuntimeConfig()
 
-    return fetch(API_URL + url, {
+    return fetch(config.baseUrl + url, {
         method: 'POST',
         mode: 'cors',
         headers: {

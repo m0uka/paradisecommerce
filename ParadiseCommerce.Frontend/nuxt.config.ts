@@ -25,6 +25,10 @@ export default defineNuxtConfig({
         },
     },
 
+    publicRuntimeConfig: {
+        baseUrl: process.env.BASE_URL || 'https://localhost:4000/api/'
+    },
+
     buildModules: [
         ['@pinia/nuxt', { disableVuex: true }]
     ],
