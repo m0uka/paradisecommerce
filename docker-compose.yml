@@ -1,8 +1,8 @@
-version: "3.9"
+version: "3.2"
 services:
   gateway:
     container_name: gateway
-    build:      
+    build:
       context: ./ParadiseCommerce.Web
       dockerfile: Dockerfile
     depends_on:
@@ -16,9 +16,11 @@ services:
       - "4000:4000"
     volumes:
       - ~/.aspnet/https:/https:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   ordering:
     container_name: ordering
-    build:      
+    build:
       context: ./ParadiseCommerce.Services.Ordering
       dockerfile: Dockerfile
     depends_on:
@@ -29,9 +31,11 @@ services:
       - ASPNETCORE_URLS=http://+:5000
     ports:
       - "5000:5000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   billing:
     container_name: billing
-    build:      
+    build:
       context: ./ParadiseCommerce.Services.Billing
       dockerfile: Dockerfile
     depends_on:
@@ -42,9 +46,11 @@ services:
       - ASPNETCORE_URLS=http://+:5004
     ports:
       - "5004:5004"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   storefront:
     container_name: storefront
-    build:      
+    build:
       context: ./ParadiseCommerce.Services.Storefront
       dockerfile: Dockerfile
     depends_on:
@@ -55,9 +61,11 @@ services:
       - ASPNETCORE_URLS=http://+:5005
     ports:
       - "5005:5005"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   users:
     container_name: users
-    build:      
+    build:
       context: ./ParadiseCommerce.Services.Users
       dockerfile: Dockerfile
     depends_on:
@@ -68,17 +76,20 @@ services:
       - ASPNETCORE_URLS=http://+:5003
     ports:
       - "5003:5003"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   rabbitmq3:
     container_name: "rabbitmq-3"
     image: rabbitmq:3.8-management-alpine
     ports:
-      - "15672:15672"
-      - "5672:5672"
+      - "127.0.0.1:15672:15672"
+      - "127.0.0.1:5672:5672"
   mongodb_container:
+    container_name: "paradisecommerce_mongodb_container_1"
     image: mongo:latest
     ports:
-      - 27017:27017
+      - "127.0.0.1:27017:27017"
     volumes:
       - mongodb_data_container:/data/db
 volumes:
-  mongodb_data_container: 
+  mongodb_data_container:
