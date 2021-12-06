@@ -38,7 +38,7 @@ namespace ParadiseCommerce.Web
                     builder.AllowAnyHeader();
                     builder.AllowAnyMethod();
                     builder.AllowCredentials();
-                    builder.WithOrigins("http://localhost:3000");
+                    builder.WithOrigins("http://localhost:3000", "http://host.docker.internal:3000", "https://paradisecommerce.m0uka.dev", "https://paradisecommerce.pages.dev");
                 });
             });
             

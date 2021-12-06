@@ -9,19 +9,19 @@
                     <div class="col-span-4 sm:col-span-2">
                         <InputLabel>Hero Title</InputLabel>
                         <InputDescription>The title of the large text on the front page</InputDescription>
-                        <TextInput v-model="frontPage.title" />
+                        <TextInput v-if="frontPageData" v-model="frontPageData.title" />
                     </div> 
                     
                     <div class="col-span-4 sm:col-span-2">
                         <InputLabel>Hero Subtitle</InputLabel>
                         <InputDescription>The subtitle of the large text on the front page</InputDescription>
-                        <TextInput v-model="frontPage.subtitle" />
+                        <TextInput v-if="frontPageData" v-model="frontPageData.subtitle" />
                     </div>
 
                     <div class="col-span-4 sm:col-span-2">
                         <InputLabel>Hero Image</InputLabel>
                         <InputDescription>The URL of the large image on the front page</InputDescription>
-                        <TextInput v-model="frontPage.imageUrl" />
+                        <TextInput v-if="frontPageData" v-model="frontPageData.imageUrl" />
                     </div>
 
                     <div class="col-span-4">
@@ -31,13 +31,13 @@
                     <div class="col-span-4 sm:col-span-2">
                         <InputLabel>CTA button text</InputLabel>
                         <InputDescription>The text of the large Call-to-Action button</InputDescription>
-                        <TextInput v-model="frontPage.mainButtonText" />
+                        <TextInput v-if="frontPageData" v-model="frontPageData.mainButtonText" />
                     </div>
 
                     <div class="col-span-4 sm:col-span-2">
                         <InputLabel>CTA button location</InputLabel>
                         <InputDescription>The redirect location of the large Call-to-Action button</InputDescription>
-                        <TextInput v-model="frontPage.mainButtonLocation" />
+                        <TextInput v-if="frontPageData" v-model="frontPageData.mainButtonLocation" />
                     </div>
                     
                 </div>
@@ -53,19 +53,19 @@
                     <div class="col-span-3 md:col-span-1">
                         <InputLabel>First</InputLabel>
                         <InputDescription>The first featured category</InputDescription>
-                        <Dropdown v-if="frontPage" :data="categories" v-model="featuredCategories[0]" />
+                        <Dropdown v-if="featuredCategories" :data="categories" v-model="featuredCategories[0]" />
                     </div> 
                     
                     <div class="col-span-3 md:col-span-1">
                         <InputLabel>Second</InputLabel>
                         <InputDescription>The second featured category</InputDescription>
-                        <Dropdown v-if="frontPage" :data="categories" v-model="featuredCategories[1]" />
+                        <Dropdown v-if="featuredCategories" :data="categories" v-model="featuredCategories[1]" />
                     </div>
 
                     <div class="col-span-3 md:col-span-1">
                         <InputLabel>Third</InputLabel>
                         <InputDescription>The third featured category</InputDescription>
-                        <Dropdown v-if="frontPage" :data="categories" v-model="featuredCategories[2]" />
+                        <Dropdown v-if="featuredCategories" :data="categories" v-model="featuredCategories[2]" />
                     </div>
                     
                 </div>
@@ -104,19 +104,26 @@ export default {
 
         const featuredCategories = ref([ '', '', '' ])
 
+        const frontPageData = ref({
+            title: '',
+        })
         const storeLoading = ref(false)
 
         return {
             frontPage,
             categories,
             featuredCategories,
-            storeLoading
+            storeLoading,
+            frontPageData
         }
     },
 
     watch: {
         frontPage: function (val) {
-            this.featuredCategories = val.featuredCategories
+            if (val) {
+                this.frontPageData = val
+                this.featuredCategories = val.featuredCategories
+            }
         }
     },
 
@@ -124,7 +131,7 @@ export default {
         async save() {
             this.storeLoading = true
 
-            const frontPage = this.frontPage
+            const frontPage = this.frontPageData
             frontPage.featuredCategories = this.featuredCategories
 
             console.log(frontPage.featuredCategories)

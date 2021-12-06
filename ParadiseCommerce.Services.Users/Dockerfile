@@ -2,13 +2,14 @@
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
+EXPOSE 5003
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["ParadiseCommerce.Services.Users/ParadiseCommerce.Services.Users.csproj", "ParadiseCommerce.Services.Users/"]
-RUN dotnet restore "ParadiseCommerce.Services.Users/ParadiseCommerce.Services.Users.csproj"
+COPY ["ParadiseCommerce.Services.Users.csproj", "ParadiseCommerce.Services.Users.csproj"]
+
+RUN dotnet restore "ParadiseCommerce.Services.Users.csproj"
 COPY . .
-WORKDIR "/src/ParadiseCommerce.Services.Users"
 RUN dotnet build "ParadiseCommerce.Services.Users.csproj" -c Release -o /app/build
 
 FROM build AS publish

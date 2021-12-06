@@ -11,11 +11,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/order/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "ParadiseCommerce.JWT",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
     },
 
     {
@@ -28,6 +24,19 @@
         }
       ],
       "UpstreamPathTemplate": "/api/products/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/categories/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/categories/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
     },
 
@@ -72,7 +81,19 @@
       ],
       "UpstreamPathTemplate": "/api/auth/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
-    }
+    },
 
+    {
+      "DownstreamPathTemplate": "/api/store/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": "5005"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/store/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
+    }
   ]
 }
