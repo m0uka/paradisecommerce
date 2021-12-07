@@ -53,3 +53,16 @@ yarn build
 to build a production environment.
 
 NOTE: This actually doesn't work yet, pending https://github.com/nuxt/framework/issues/886
+
+#### Store Setup
+
+Your Store should be running at port 3000.  
+In order to setup the store, first you have to register. After registering, you will need to add yourself to the Admin role in MongoDB.  
+After adding yourself to Admin, you can visit the /admin path, where you can configure most of the stuff.  
+  
+Please do not enter invalid values, there is almost none form validation built in currently.
+
+## Ending words
+This project was made as a school project, and I might continue working on it for my personal purposes.  
+It is definitely not finished, but it's a solid codebase to build on.  
+This repository does not have a public license and all rights are reserved. You cannot modify or redistribute this code without explicit permission from the copyright holder.
