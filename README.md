@@ -36,6 +36,8 @@ You will need to create a config file for every microservice - there should be a
 If you don't wish to use Docker for the backend deployment, you can compile and run all the services seperately, including RabbitMQ and MongoDB.  
 If you did everything right, the backend should be running.
 
+Before building the frontend, you'll need to set a BASE_URL environment variable, that points to the API backend. It must end with a trailing slash.
+
 You can start the frontend in dev mode by using NPM or Yarn, with the following commands (for Yarn):
 
 ```bash
