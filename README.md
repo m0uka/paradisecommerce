@@ -29,8 +29,9 @@ Installing ParadiseCommerce isn't that simple, because it utilizes the Microserv
   
 It should be deployed on an orchestrator, such as Kubernetes, but for the sake of simplicity there's a Docker Compose file used for deploying the backend and its required services.  
 Frontend is not included in the Docker Compose and it has to be deployed manually, ideally on a service such as Cloudflare Pages.
-  
-You will need to tweak some settings in the docker-compose.yml file - add API secrets, JWT secrets, maybe change ports, etc..
+
+#### Configuring app secrets and settings
+You will need to create a config file for every microservice - there should be an appsettings.Example.json in every microservice - copy that, rename it to appsettings.Production.json and tweak the settings.
   
 If you don't wish to use Docker for the backend deployment, you can compile and run all the services seperately, including RabbitMQ and MongoDB.  
 If you did everything right, the backend should be running.
